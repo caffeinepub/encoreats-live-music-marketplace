@@ -65,6 +65,29 @@ export const Slot = IDL.Record({
   'userId' : UserId,
   'isAvailable' : IDL.Bool,
 });
+export const EventType = IDL.Variant({
+  'page_view' : IDL.Null,
+  'action' : IDL.Null,
+  'session_start' : IDL.Null,
+  'logout' : IDL.Null,
+  'login' : IDL.Null,
+});
+export const UsageEvent = IDL.Record({
+  'principal' : IDL.Principal,
+  'page' : IDL.Opt(IDL.Text),
+  'timestamp' : Time,
+  'actionDetail' : IDL.Opt(IDL.Text),
+  'actionCategory' : IDL.Opt(IDL.Text),
+  'eventType' : EventType,
+});
+export const AnalyticsSummary = IDL.Record({
+  'totalUniqueUsers' : IDL.Nat,
+  'dailyActiveUsers' : IDL.Nat,
+  'analyticsTrackingEnabled' : IDL.Bool,
+  'lastActiveUsers' : IDL.Nat,
+  'totalSessions' : IDL.Nat,
+  'recentEvents' : IDL.Vec(UsageEvent),
+});
 
 export const idlService = IDL.Service({
   '_caffeineStorageBlobIsLive' : IDL.Func(
@@ -96,8 +119,11 @@ export const idlService = IDL.Service({
   '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
   'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
   'bookGig' : IDL.Func([Gig], [], []),
+  'clearAnalyticsData' : IDL.Func([], [], []),
   'createOrUpdateProfile' : IDL.Func([UserProfile], [], []),
   'createSlot' : IDL.Func([Slot], [], []),
+  'disableAnalyticsTracking' : IDL.Func([], [], []),
+  'enableAnalyticsTracking' : IDL.Func([], [], []),
   'fetchAllGigs' : IDL.Func([], [IDL.Vec(Gig)], ['query']),
   'fetchAllMusicians' : IDL.Func([], [IDL.Vec(UserProfile)], ['query']),
   'fetchAllProfiles' : IDL.Func([], [IDL.Vec(UserProfile)], ['query']),
@@ -125,8 +151,10 @@ export const idlService = IDL.Service({
   'fetchSlots' : IDL.Func([UserId], [IDL.Vec(Slot)], ['query']),
   'fetchSlotsByMusician' : IDL.Func([UserId], [IDL.Vec(Slot)], ['query']),
   'fetchVenueGigs' : IDL.Func([UserId], [IDL.Vec(Gig)], ['query']),
+  'getAnalyticsSummary' : IDL.Func([], [AnalyticsSummary], ['query']),
   'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
   'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
+  'getUsageEvents' : IDL.Func([], [IDL.Vec(UsageEvent)], ['query']),
   'getUserProfile' : IDL.Func(
       [IDL.Principal],
       [IDL.Opt(UserProfile)],
@@ -143,7 +171,13 @@ export const idlService = IDL.Service({
       ],
       ['query'],
     ),
+  'isAnalyticsTrackingEnabled' : IDL.Func([], [IDL.Bool], ['query']),
   'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
+  'recordUsageEvent' : IDL.Func(
+      [EventType, IDL.Opt(IDL.Text), IDL.Opt(IDL.Text), IDL.Opt(IDL.Text)],
+      [],
+      [],
+    ),
   'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
   'updateSlotAvailability' : IDL.Func([IDL.Nat, IDL.Bool], [], []),
   'uploadContract' : IDL.Func([IDL.Nat, IDL.Text, ExternalBlob], [], []),
@@ -210,6 +244,29 @@ export const idlFactory = ({ IDL }) => {
     'userId' : UserId,
     'isAvailable' : IDL.Bool,
   });
+  const EventType = IDL.Variant({
+    'page_view' : IDL.Null,
+    'action' : IDL.Null,
+    'session_start' : IDL.Null,
+    'logout' : IDL.Null,
+    'login' : IDL.Null,
+  });
+  const UsageEvent = IDL.Record({
+    'principal' : IDL.Principal,
+    'page' : IDL.Opt(IDL.Text),
+    'timestamp' : Time,
+    'actionDetail' : IDL.Opt(IDL.Text),
+    'actionCategory' : IDL.Opt(IDL.Text),
+    'eventType' : EventType,
+  });
+  const AnalyticsSummary = IDL.Record({
+    'totalUniqueUsers' : IDL.Nat,
+    'dailyActiveUsers' : IDL.Nat,
+    'analyticsTrackingEnabled' : IDL.Bool,
+    'lastActiveUsers' : IDL.Nat,
+    'totalSessions' : IDL.Nat,
+    'recentEvents' : IDL.Vec(UsageEvent),
+  });
   
   return IDL.Service({
     '_caffeineStorageBlobIsLive' : IDL.Func(
@@ -241,8 +298,11 @@ export const idlFactory = ({ IDL }) => {
     '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
     'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
     'bookGig' : IDL.Func([Gig], [], []),
+    'clearAnalyticsData' : IDL.Func([], [], []),
     'createOrUpdateProfile' : IDL.Func([UserProfile], [], []),
     'createSlot' : IDL.Func([Slot], [], []),
+    'disableAnalyticsTracking' : IDL.Func([], [], []),
+    'enableAnalyticsTracking' : IDL.Func([], [], []),
     'fetchAllGigs' : IDL.Func([], [IDL.Vec(Gig)], ['query']),
     'fetchAllMusicians' : IDL.Func([], [IDL.Vec(UserProfile)], ['query']),
     'fetchAllProfiles' : IDL.Func([], [IDL.Vec(UserProfile)], ['query']),
@@ -270,8 +330,10 @@ export const idlFactory = ({ IDL }) => {
     'fetchSlots' : IDL.Func([UserId], [IDL.Vec(Slot)], ['query']),
     'fetchSlotsByMusician' : IDL.Func([UserId], [IDL.Vec(Slot)], ['query']),
     'fetchVenueGigs' : IDL.Func([UserId], [IDL.Vec(Gig)], ['query']),
+    'getAnalyticsSummary' : IDL.Func([], [AnalyticsSummary], ['query']),
     'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
     'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
+    'getUsageEvents' : IDL.Func([], [IDL.Vec(UsageEvent)], ['query']),
     'getUserProfile' : IDL.Func(
         [IDL.Principal],
         [IDL.Opt(UserProfile)],
@@ -288,7 +350,13 @@ export const idlFactory = ({ IDL }) => {
         ],
         ['query'],
       ),
+    'isAnalyticsTrackingEnabled' : IDL.Func([], [IDL.Bool], ['query']),
     'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
+    'recordUsageEvent' : IDL.Func(
+        [EventType, IDL.Opt(IDL.Text), IDL.Opt(IDL.Text), IDL.Opt(IDL.Text)],
+        [],
+        [],
+      ),
     'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
     'updateSlotAvailability' : IDL.Func([IDL.Nat, IDL.Bool], [], []),
     'uploadContract' : IDL.Func([IDL.Nat, IDL.Text, ExternalBlob], [], []),

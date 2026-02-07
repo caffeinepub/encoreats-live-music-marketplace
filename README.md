@@ -1,2 +1,3 @@
-# encoreats-live-music-marketplace
-Exported from Caffeine project: Encoreats   Live Music Marketplace
+## 
+
+To run app build and run docker image: `docker build -t app . docker run -it --network host app`

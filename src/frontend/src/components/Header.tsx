@@ -1,19 +1,24 @@
 import { useInternetIdentity } from '../hooks/useInternetIdentity';
-import { useGetCallerUserProfile } from '../hooks/useQueries';
+import { useGetCallerUserProfile, useIsCallerAdmin } from '../hooks/useQueries';
 import { useQueryClient } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Music, LogOut, User } from 'lucide-react';
+import { Music, LogOut, User, Shield } from 'lucide-react';
 
 export default function Header() {
   const { clear } = useInternetIdentity();
   const { data: userProfile } = useGetCallerUserProfile();
+  const { data: isAdmin } = useIsCallerAdmin();
   const queryClient = useQueryClient();
 
   const handleLogout = async () => {
     await clear();
     queryClient.clear();
+  };
+
+  const handleAdminClick = () => {
+    window.location.href = '/admin';
   };
 
   const getInitials = (name: string) => {
@@ -57,6 +62,15 @@ export default function Header() {
               <User className="mr-2 h-4 w-4" />
               <span>Profile Settings</span>
             </DropdownMenuItem>
+            {isAdmin && (
+              <>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleAdminClick}>
+                  <Shield className="mr-2 h-4 w-4" />
+                  <span>Admin Dashboard</span>
+                </DropdownMenuItem>
+              </>
+            )}
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleLogout} className="text-destructive focus:text-destructive">
               <LogOut className="mr-2 h-4 w-4" />

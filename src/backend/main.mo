@@ -137,12 +137,67 @@ actor {
     };
   };
 
+  // Analytics Tracking Types
+  public type EventType = { #session_start; #page_view; #action; #login; #logout };
+
+  // Extended UsageEvent type to include action details
+  public type UsageEvent = {
+    timestamp : Time.Time;
+    principal : Principal;
+    eventType : EventType;
+    page : ?Text;
+    actionCategory : ?Text;
+    actionDetail : ?Text;
+  };
+
+  public type AnalyticsSummary = {
+    totalUniqueUsers : Nat;
+    totalSessions : Nat;
+    dailyActiveUsers : Nat;
+    lastActiveUsers : Nat;
+    recentEvents : [UsageEvent];
+    analyticsTrackingEnabled : Bool;
+  };
+
+  // Usage Activity Tracker
+  let eventLog = List.empty<UsageEvent>();
+  var totalUniqueUsers = 0;
+  var totalSessions = 0;
+  var dailyActiveUsers = 0;
+  var lastActiveUsers = 0;
+  var analyticsTrackingEnabled = true;
+
   // Data Stores
   let profiles = Map.empty<UserId, UserProfile>();
   let gigs = Map.empty<GigId, Gig>();
   let transactions = Map.empty<TransactionId, Transaction>();
   let roiData = Map.empty<GigId, ROIData>();
   let slots = Map.empty<Nat, Slot>();
+
+  // Analytics Management Functions
+  func logEvent(principal : Principal, eventType : EventType, page : ?Text, actionCategory : ?Text, actionDetail : ?Text) {
+    if (analyticsTrackingEnabled) {
+      let event = {
+        timestamp = Time.now();
+        principal;
+        eventType;
+        page;
+        actionCategory;
+        actionDetail;
+      };
+      eventLog.add(event);
+
+      switch (eventType) {
+        case (#session_start) { totalSessions += 1 };
+        case (#page_view) { totalSessions += 1 };
+        case (#action) {};
+        case (#login) { totalSessions += 1 };
+        case (#logout) {};
+      };
+
+      totalUniqueUsers := eventLog.size();
+    };
+  };
 
   // Data Store Management
   func insertProfile(profile : UserProfile) { profiles.add(profile.id, profile) };
@@ -502,5 +557,70 @@ actor {
     gigs.values().toArray().filter(
       func(gig) { gig.musicianId == musicianId }
     );
+  };
+
+  // Analytics Management (Admin Only)
+  public query ({ caller }) func getAnalyticsSummary() : async AnalyticsSummary {
+    if (not (AccessControl.isAdmin(accessControlState, caller))) {
+      Runtime.trap("Unauthorized: Only admins can access analytics");
+    };
+
+    let eventLogArray = eventLog.toArray();
+    let size = eventLogArray.size();
+    let recentEventsSize = if (size >= 10) { 10 } else { size };
+    let recentEvents = eventLogArray.sliceToArray(0, recentEventsSize);
+
+    {
+      totalUniqueUsers;
+      totalSessions;
+      dailyActiveUsers;
+      lastActiveUsers;
+      recentEvents;
+      analyticsTrackingEnabled;
+    };
+  };
+
+  public query ({ caller }) func getUsageEvents() : async [UsageEvent] {
+    if (not (AccessControl.isAdmin(accessControlState, caller))) {
+      Runtime.trap("Unauthorized: Only admins can access usage events");
+    };
+    eventLog.toArray();
+  };
+
+  public shared ({ caller }) func enableAnalyticsTracking() : async () {
+    if (not (AccessControl.isAdmin(accessControlState, caller))) {
+      Runtime.trap("Unauthorized: Only admins can enable analytics tracking");
+    };
+    analyticsTrackingEnabled := true;
+  };
+
+  public shared ({ caller }) func disableAnalyticsTracking() : async () {
+    if (not (AccessControl.isAdmin(accessControlState, caller))) {
+      Runtime.trap("Unauthorized: Only admins can disable analytics tracking");
+    };
+    analyticsTrackingEnabled := false;
+  };
+
+  public shared ({ caller }) func clearAnalyticsData() : async () {
+    if (not (AccessControl.isAdmin(accessControlState, caller))) {
+      Runtime.trap("Unauthorized: Only admins can clear analytics data");
+    };
+    eventLog.clear();
+    totalUniqueUsers := 0;
+    totalSessions := 0;
+    dailyActiveUsers := 0;
+    lastActiveUsers := 0;
+  };
+
+  public shared ({ caller }) func recordUsageEvent(eventType : EventType, page : ?Text, actionCategory : ?Text, actionDetail : ?Text) : async () {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only authenticated users can record usage events");
+    };
+    logEvent(caller, eventType, page, actionCategory, actionDetail);
+  };
+
+  // Public function to fetch analytics tracking status (used to conditionally emit events)
+  public query ({ caller }) func isAnalyticsTrackingEnabled() : async Bool {
+    analyticsTrackingEnabled;
   };
 };

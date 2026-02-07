@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useActor } from './useActor';
 import { useInternetIdentity } from './useInternetIdentity';
-import type { UserProfile, Gig, Slot, Role } from '../backend';
+import type { UserProfile, Gig, Slot, Role, AnalyticsSummary, UsageEvent, EventType } from '../backend';
 import { ExternalBlob } from '../backend';
 import { Principal } from '@dfinity/principal';
 import { toast } from 'sonner';
@@ -267,6 +267,88 @@ export function useUploadContract() {
     },
     onError: (error: Error) => {
       toast.error(`Failed to upload contract: ${error.message}`);
+    },
+  });
+}
+
+// Admin Authorization Query
+export function useIsCallerAdmin() {
+  const { actor, isFetching } = useActor();
+
+  return useQuery<boolean>({
+    queryKey: ['isAdmin'],
+    queryFn: async () => {
+      if (!actor) return false;
+      try {
+        return await actor.isCallerAdmin();
+      } catch (error) {
+        return false;
+      }
+    },
+    enabled: !!actor && !isFetching,
+    retry: false,
+  });
+}
+
+// Analytics Queries (Admin Only)
+export function useGetAnalyticsSummary() {
+  const { actor, isFetching } = useActor();
+  const { data: isAdmin } = useIsCallerAdmin();
+
+  return useQuery<AnalyticsSummary>({
+    queryKey: ['analyticsSummary'],
+    queryFn: async () => {
+      if (!actor) throw new Error('Actor not available');
+      return actor.getAnalyticsSummary();
+    },
+    enabled: !!actor && !isFetching && isAdmin === true,
+    retry: false,
+  });
+}
+
+export function useGetUsageEvents() {
+  const { actor, isFetching } = useActor();
+  const { data: isAdmin } = useIsCallerAdmin();
+
+  return useQuery<UsageEvent[]>({
+    queryKey: ['usageEvents'],
+    queryFn: async () => {
+      if (!actor) throw new Error('Actor not available');
+      return actor.getUsageEvents();
+    },
+    enabled: !!actor && !isFetching && isAdmin === true,
+    retry: false,
+  });
+}
+
+// Usage Tracking Mutation
+export function useRecordUsageEvent() {
+  const { actor } = useActor();
+
+  return useMutation({
+    mutationFn: async ({ 
+      eventType, 
+      page, 
+      actionCategory, 
+      actionDetail 
+    }: { 
+      eventType: EventType; 
+      page?: string; 
+      actionCategory?: string; 
+      actionDetail?: string;
+    }) => {
+      if (!actor) return;
+      try {
+        await actor.recordUsageEvent(
+          eventType, 
+          page || null, 
+          actionCategory || null, 
+          actionDetail || null
+        );
+      } catch (error) {
+        // Silently fail - tracking should not break the app
+        console.warn('Failed to record usage event:', error);
+      }
     },
   });
 }

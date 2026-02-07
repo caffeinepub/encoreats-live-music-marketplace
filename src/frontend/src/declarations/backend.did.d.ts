@@ -10,6 +10,19 @@ import type { ActorMethod } from '@icp-sdk/core/agent';
 import type { IDL } from '@icp-sdk/core/candid';
 import type { Principal } from '@icp-sdk/core/principal';
 
+export interface AnalyticsSummary {
+  'totalUniqueUsers' : bigint,
+  'dailyActiveUsers' : bigint,
+  'analyticsTrackingEnabled' : boolean,
+  'lastActiveUsers' : bigint,
+  'totalSessions' : bigint,
+  'recentEvents' : Array<UsageEvent>,
+}
+export type EventType = { 'page_view' : null } |
+  { 'action' : null } |
+  { 'session_start' : null } |
+  { 'logout' : null } |
+  { 'login' : null };
 export type ExternalBlob = Uint8Array;
 export interface Gig {
   'id' : GigId,
@@ -36,6 +49,14 @@ export interface Slot {
   'isAvailable' : boolean,
 }
 export type Time = bigint;
+export interface UsageEvent {
+  'principal' : Principal,
+  'page' : [] | [string],
+  'timestamp' : Time,
+  'actionDetail' : [] | [string],
+  'actionCategory' : [] | [string],
+  'eventType' : EventType,
+}
 export type UserId = Principal;
 export interface UserProfile {
   'id' : UserId,
@@ -80,8 +101,11 @@ export interface _SERVICE {
   '_initializeAccessControlWithSecret' : ActorMethod<[string], undefined>,
   'assignCallerUserRole' : ActorMethod<[Principal, UserRole], undefined>,
   'bookGig' : ActorMethod<[Gig], undefined>,
+  'clearAnalyticsData' : ActorMethod<[], undefined>,
   'createOrUpdateProfile' : ActorMethod<[UserProfile], undefined>,
   'createSlot' : ActorMethod<[Slot], undefined>,
+  'disableAnalyticsTracking' : ActorMethod<[], undefined>,
+  'enableAnalyticsTracking' : ActorMethod<[], undefined>,
   'fetchAllGigs' : ActorMethod<[], Array<Gig>>,
   'fetchAllMusicians' : ActorMethod<[], Array<UserProfile>>,
   'fetchAllProfiles' : ActorMethod<[], Array<UserProfile>>,
@@ -97,14 +121,21 @@ export interface _SERVICE {
   'fetchSlots' : ActorMethod<[UserId], Array<Slot>>,
   'fetchSlotsByMusician' : ActorMethod<[UserId], Array<Slot>>,
   'fetchVenueGigs' : ActorMethod<[UserId], Array<Gig>>,
+  'getAnalyticsSummary' : ActorMethod<[], AnalyticsSummary>,
   'getCallerUserProfile' : ActorMethod<[], [] | [UserProfile]>,
   'getCallerUserRole' : ActorMethod<[], UserRole>,
+  'getUsageEvents' : ActorMethod<[], Array<UsageEvent>>,
   'getUserProfile' : ActorMethod<[Principal], [] | [UserProfile]>,
   'getWalletState' : ActorMethod<
     [UserId],
     { 'paid' : bigint, 'locked' : bigint, 'available' : bigint }
   >,
+  'isAnalyticsTrackingEnabled' : ActorMethod<[], boolean>,
   'isCallerAdmin' : ActorMethod<[], boolean>,
+  'recordUsageEvent' : ActorMethod<
+    [EventType, [] | [string], [] | [string], [] | [string]],
+    undefined
+  >,
   'saveCallerUserProfile' : ActorMethod<[UserProfile], undefined>,
   'updateSlotAvailability' : ActorMethod<[bigint, boolean], undefined>,
   'uploadContract' : ActorMethod<[bigint, string, ExternalBlob], undefined>,

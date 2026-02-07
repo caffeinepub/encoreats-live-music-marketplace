@@ -1,5 +1,7 @@
+import { useEffect } from 'react';
 import { useInternetIdentity } from './hooks/useInternetIdentity';
-import { useGetCallerUserProfile } from './hooks/useQueries';
+import { useGetCallerUserProfile, useIsCallerAdmin } from './hooks/useQueries';
+import { useUsageTracking } from './hooks/useUsageTracking';
 import { Toaster } from '@/components/ui/sonner';
 import { ThemeProvider } from 'next-themes';
 import LandingPage from './pages/LandingPage';
@@ -7,14 +9,28 @@ import ProfileSetup from './components/ProfileSetup';
 import VenueDashboard from './pages/VenueDashboard';
 import MusicianDashboard from './pages/MusicianDashboard';
 import CustomerDashboard from './pages/CustomerDashboard';
+import AdminDashboard from './pages/AdminDashboard';
+import AccessDeniedScreen from './components/AccessDeniedScreen';
 import { Role } from './backend';
 
 export default function App() {
   const { identity, loginStatus } = useInternetIdentity();
   const { data: userProfile, isLoading: profileLoading, isFetched } = useGetCallerUserProfile();
+  const { data: isAdmin, isLoading: adminLoading } = useIsCallerAdmin();
+  const { trackPageView } = useUsageTracking();
 
   const isAuthenticated = !!identity;
   const showProfileSetup = isAuthenticated && !profileLoading && isFetched && userProfile === null;
+
+  // Track page views when path changes
+  useEffect(() => {
+    if (isAuthenticated) {
+      trackPageView(window.location.pathname);
+    }
+  }, [isAuthenticated, trackPageView]);
+
+  // Check if current path is /admin
+  const isAdminPath = window.location.pathname === '/admin';
 
   // Show landing page if not authenticated
   if (!isAuthenticated || loginStatus === 'initializing') {
@@ -37,7 +53,7 @@ export default function App() {
   }
 
   // Show loading state while profile is being fetched
-  if (profileLoading || !isFetched) {
+  if (profileLoading || !isFetched || adminLoading) {
     return (
       <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
         <div className="flex h-screen items-center justify-center bg-background">
@@ -49,6 +65,25 @@ export default function App() {
         <Toaster />
       </ThemeProvider>
     );
+  }
+
+  // Handle /admin route
+  if (isAdminPath) {
+    if (isAdmin) {
+      return (
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+          <AdminDashboard />
+          <Toaster />
+        </ThemeProvider>
+      );
+    } else {
+      return (
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+          <AccessDeniedScreen />
+          <Toaster />
+        </ThemeProvider>
+      );
+    }
   }
 
   // Route to appropriate dashboard based on user role

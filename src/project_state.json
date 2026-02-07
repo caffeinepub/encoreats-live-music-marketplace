@@ -1,0 +1,87 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 3,
+  "summary": "Encoreats app to include built-in usage analytics and a pro admin dashboard (/admin) with charts, trends, logs, and access control to monitor user activity.",
+  "architectural_notes": [
+    "Implement in-app analytics without third-party services; track/store usage metrics in backend and expose them to a password-gated /admin dashboard."
+  ],
+  "known_issues": [
+    "Automated build/implementation of the requested pro admin dashboard failed multiple times; may need simplification or re-scoping to succeed."
+  ],
+  "isFixRequest": false,
+  "existing_features": [
+    {
+      "id": "feature-add-frontend-tracking-that-automatically-records-usage-events-to-the-backend-record-a-session-start-when-an-authenticated-user-enters-the-app-and-record-page-view-or-equivalent-for-the-currently-rendered-screen-ensure-the-tracking-calls-do-not-block-ui-rendering-and-gracefully-no-op-when-the-actor-identity-is-unavailable",
+      "title": "Add frontend tracking that automatically records usage events to the backend: record a `session_start` when an authenticated user enters the app and record `page_view` (or equivalent) for the currently rendered screen. Ensure the tracking calls do not block UI rendering and gracefully no-op when the actor/identity is unavailable.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-simplified-admin-admin-dashboard-ui-page-new-react-page-component-under-frontend-src-pages-that-shows-total-unique-users-total-sessions-daily-active-users-trend-last-n-days-and-a-scrollable-recent-activity-log-table-use-existing-shadcn-ui-components-and-tailwind-styling-consistent-with-the-app",
+      "title": "Create a simplified `/admin` admin dashboard UI page (new React page component under `frontend/src/pages/`) that shows: total unique users, total sessions, daily active users trend (last N days), and a scrollable recent activity log table. Use existing shadcn UI components and Tailwind styling consistent with the app.",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-navigation-entry-to-the-admin-dashboard-without-introducing-a-full-routing-framework-implement-minimal-path-based-rendering-so-that-visiting-admin-renders-the-admin-dashboard-instead-of-the-role-dashboard-if-the-current-user-is-not-an-admin-show-an-access-denied-screen-for-admin",
+      "title": "Add navigation/entry to the admin dashboard without introducing a full routing framework: implement minimal path-based rendering so that visiting `/admin` renders the admin dashboard instead of the role dashboard. If the current user is not an admin, show an 'Access denied' screen for `/admin`.",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-react-query-hooks-in-frontend-src-hooks-usequeries-ts-or-a-new-hooks-file-if-needed-to-call-the-new-backend-analytics-endpoints-1-fetch-admin-analytics-summary-2-fetch-daily-active-trend-3-fetch-paginated-logs-and-4-record-tracking-events",
+      "title": "Add React Query hooks in `frontend/src/hooks/useQueries.ts` (or a new hooks file if needed) to call the new backend analytics endpoints: (1) fetch admin analytics summary, (2) fetch daily active trend, (3) fetch paginated logs, and (4) record tracking events.",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Add built-in usage analytics (unique users, sessions, daily active users, last active timestamps) stored in backend",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Create a pro admin dashboard (/admin) with password-gated access showing charts/graphs, daily usage trends, and logs for app usage",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Add built-in usage analytics storage and APIs in `backend/main.mo` to track app usage without third-party services. At minimum, store: (a) total unique users (principals), (b) total sessions, (c) per-day active users counts for the last N days, and (d) last-active timestamp per user.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Implement an append-only usage log in `backend/main.mo` and a query API that returns a paginated slice of recent events for display in the admin dashboard. Each event must include timestamp, caller principal, and a simple event type (e.g., session_start, page_view).",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Add admin-only backend APIs in `backend/main.mo` to fetch the aggregated analytics summary and trends needed by the dashboard, and enforce access control using the existing authorization system (only admin principals can access admin analytics/log endpoints).",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "status": "pending"
+    }
+  ],
+  "projectName": "Encoreats",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

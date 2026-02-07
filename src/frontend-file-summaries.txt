@@ -1,11 +1,11 @@
 {
-  "frontend/src/App.tsx": "Main application component that handles routing based on user authentication and role, showing landing page for guests, profile setup for new users, and role-specific dashboards for authenticated users.",
-  "frontend/src/hooks/useQueries.ts": "Custom React Query hooks for all backend operations with proper Principal type conversions for user IDs, including profile management, musician search, gig booking, slot management, wallet state, and contract uploads with error handling and cache invalidation.",
+  "frontend/src/App.tsx": "Main application component with routing logic for authentication, profile setup, role-based dashboards, and admin dashboard with access control based on admin status.",
+  "frontend/src/hooks/useQueries.ts": "Custom React Query hooks for all backend operations including profile management, gigs, slots, wallet state, and new admin analytics queries (summary, events, admin check) with usage tracking mutation.",
   "frontend/src/pages/LandingPage.tsx": "Public landing page with hero section, event search, upcoming events grid, features showcase, and footer with social links for unauthenticated users.",
   "frontend/src/pages/VenueDashboard.tsx": "Venue dashboard with stats cards, musician search and booking interface, event management with QR scanner for attendance verification, using proper enum comparisons for gig status.",
   "frontend/src/pages/MusicianDashboard.tsx": "Musician dashboard with earnings stats, gig management, availability calendar, wallet view with payment states, and QR ticket generation using correct enum status values.",
   "frontend/src/pages/CustomerDashboard.tsx": "Customer dashboard for browsing and searching upcoming live music events with proper enum status display and filtering capabilities.",
-  "frontend/src/components/Header.tsx": "Sticky header component with Encoreats branding, user avatar dropdown menu showing profile info and logout functionality.",
+  "frontend/src/components/Header.tsx": "Sticky header component with Encoreats branding, user avatar dropdown menu, and conditional admin dashboard link for admin users.",
   "frontend/src/components/ProfileSetup.tsx": "Profile setup form for new users to select their role (venue/musician/customer) and enter basic information including name, phone, location, and bio.",
   "frontend/src/components/MusicianSearch.tsx": "Searchable musician directory with filtering by name, location, and bio, displaying musician cards with ratings and booking buttons.",
   "frontend/src/components/BookingDialog.tsx": "Modal dialog for venues to book musicians with event details form, using the correct Variant_pending_completed_confirmed enum for gig status.",
@@ -14,5 +14,8 @@
   "frontend/src/components/WalletView.tsx": "Wallet dashboard displaying musician earnings across three states (locked, available, paid) with explanatory information about the payment flow.",
   "frontend/src/components/QRTicketGenerator.tsx": "Component for musicians to generate and download QR code tickets using a canvas-based QR generator, displaying confirmed gigs with proper enum status handling.",
   "frontend/src/index.css": "Global styles with dark theme OKLCH color system featuring purple/blue neon accents, glassmorphism effects, and Poppins/Inter typography.",
-  "frontend/tailwind.config.js": "Tailwind configuration with extended color palette for neon accents, custom shadows for glow effects, and animation utilities."
+  "frontend/tailwind.config.js": "Tailwind configuration with extended color palette for neon accents, custom shadows for glow effects, and animation utilities.",
+  "frontend/src/hooks/useUsageTracking.ts": "React hook that automatically tracks user sessions and provides methods to track page views and actions, silently handling errors to prevent app disruption.",
+  "frontend/src/components/AccessDeniedScreen.tsx": "Simple access denied screen component displayed to non-admin users attempting to access restricted admin areas.",
+  "frontend/src/pages/AdminDashboard.tsx": "Admin dashboard page displaying KPI cards for user metrics, and a table of recent activity logs with proper loading, empty, and error states."
 }

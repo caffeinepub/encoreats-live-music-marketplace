@@ -1,0 +1,103 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Encoreats frontend usage tracking + minimal /admin dashboard",
+  "requirements": [
+    {
+      "id": "REQ-4",
+      "summary": "Add non-blocking frontend usage tracking for authenticated sessions and page views with graceful no-op when actor/identity is unavailable.",
+      "acceptanceCriteria": [
+        "When a user is authenticated, at least one backend tracking call is made per app visit (session_start).",
+        "Tracking does not throw uncaught errors if the actor is not ready; the app remains usable.",
+        "Tracking is implemented using existing React Query/actor patterns (e.g., via `useActor()` and a small mutation/helper)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useUsageTracking.ts",
+          "operation": "create",
+          "description": "Create a small tracking helper hook that uses React Query mutation(s) (from useQueries) to fire-and-forget `session_start` and `page_view` events; ensure it checks actor availability and catches errors so UI never blocks or crashes. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire in the usage tracking hook so that after authentication/profile readiness it records `session_start` once per app visit and records a `page_view` for the initially rendered screen (and on path changes via window history listeners if implemented), without blocking rendering. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "summary": "Create a new /admin dashboard page showing KPIs, daily active trend, and a scrollable recent usage log using shadcn UI + Tailwind with proper loading/empty/error states.",
+      "acceptanceCriteria": [
+        "Admin dashboard displays numeric KPI cards for unique users and sessions.",
+        "Admin dashboard displays a daily active users trend visualization (simple chart or bar list is acceptable).",
+        "Admin dashboard displays recent logs in a table/list with timestamp and principal at minimum.",
+        "Loading, empty-state, and error states are handled with user-facing English text."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/AdminDashboard.tsx",
+          "operation": "create",
+          "description": "Implement the AdminDashboard page UI using existing shadcn-ui components (e.g., Card, Table, Button, Skeleton) and Tailwind: show KPI cards (unique users, sessions), a simple daily-active trend visualization, and a scrollable/paginated recent events table. Consume analytics/log data only via the new React Query hooks (REQ-7). Include loading, empty, and error states with English text. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/AccessDeniedScreen.tsx",
+          "operation": "create",
+          "description": "Add a lightweight, reusable access denied screen component (English copy) for non-admin users who visit /admin. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "summary": "Add minimal path-based rendering for /admin (no full router) with an admin guard that shows Access Denied for non-admin users.",
+      "acceptanceCriteria": [
+        "When the browser path is `/admin`, the admin dashboard component is rendered.",
+        "Non-admin authenticated users visiting `/admin` see an access denied message and do not see analytics/log data.",
+        "Authenticated admin users visiting `/admin` can see analytics/log data.",
+        "No changes are made to immutable paths listed in SYSTEM_CONTEXT."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Add minimal path-based rendering logic: if window.location.pathname is `/admin`, render AdminDashboard for admins; otherwise render AccessDeniedScreen. Keep existing role dashboards for non-/admin paths and avoid introducing a full routing framework. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useQueries.ts",
+          "operation": "modify",
+          "description": "Add/adjust a query hook to determine whether the current caller is an admin (e.g., call the backend capability that returns boolean). This will be used to guard `/admin` rendering and avoid fetching admin data for non-admins. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/Header.tsx",
+          "operation": "modify",
+          "description": "Add a conditional navigation entry (e.g., dropdown item) to `/admin` that is only shown for admin users, using the authorization-backed admin check hook. Use the selected \"authorization\" component’s frontend guidance to handle authorization errors gracefully (AccessDenied UI) and to keep cached data cleared on logout. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "summary": "Add React Query hooks for admin analytics summary/trends/logs and for recording tracking events, following existing useActor + enabled-flag conventions.",
+      "acceptanceCriteria": [
+        "Hooks follow existing conventions in `useQueries.ts` (useActor + enabled flags).",
+        "Admin dashboard uses these hooks rather than calling the actor directly in components.",
+        "Queries are properly keyed and can be refetched (e.g., after pagination change)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useQueries.ts",
+          "operation": "modify",
+          "description": "Extend hooks with analytics capabilities: (1) fetch admin analytics summary, (2) fetch daily active trend, (3) fetch paginated logs (accept page/limit or offset/limit and key accordingly), and (4) record tracking events (session_start, page_view). Follow existing conventions (useActor, enabled flags, error handling). Ensure admin-only queries are disabled unless admin is true. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/backend.d.ts",
+          "operation": "modify",
+          "description": "Update TypeScript canister interface types to include the new admin analytics/trend/log pagination methods and any related types required by the new hooks and AdminDashboard UI. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/AdminDashboard.tsx",
+          "operation": "modify",
+          "description": "Wire AdminDashboard to the new hooks for summary/trend/log pagination and add refetch controls (e.g., next/prev) that update query keys and trigger refetch. Verify the component's usage instructions before implementing."
+        }
+      ]
+    }
+  ]
+}

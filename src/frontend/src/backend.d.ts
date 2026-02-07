@@ -14,9 +14,17 @@ export class ExternalBlob {
     static fromBytes(blob: Uint8Array<ArrayBuffer>): ExternalBlob;
     withUploadProgress(onProgress: (percentage: number) => void): ExternalBlob;
 }
-export type UserId = Principal;
 export type GigId = bigint;
+export interface AnalyticsSummary {
+    totalUniqueUsers: bigint;
+    dailyActiveUsers: bigint;
+    analyticsTrackingEnabled: boolean;
+    lastActiveUsers: bigint;
+    totalSessions: bigint;
+    recentEvents: Array<UsageEvent>;
+}
 export type Time = bigint;
+export type UserId = Principal;
 export interface Gig {
     id: GigId;
     status: Variant_pending_completed_confirmed;
@@ -35,6 +43,14 @@ export interface Slot {
     userId: UserId;
     isAvailable: boolean;
 }
+export interface UsageEvent {
+    principal: Principal;
+    page?: string;
+    timestamp: Time;
+    actionDetail?: string;
+    actionCategory?: string;
+    eventType: EventType;
+}
 export interface UserProfile {
     id: UserId;
     bio: string;
@@ -44,6 +60,13 @@ export interface UserProfile {
     rating: number;
     phone: string;
     location: string;
+}
+export enum EventType {
+    page_view = "page_view",
+    action = "action",
+    session_start = "session_start",
+    logout = "logout",
+    login = "login"
 }
 export enum Role {
     musician = "musician",
@@ -63,8 +86,11 @@ export enum Variant_pending_completed_confirmed {
 export interface backendInterface {
     assignCallerUserRole(user: Principal, role: UserRole): Promise<void>;
     bookGig(gig: Gig): Promise<void>;
+    clearAnalyticsData(): Promise<void>;
     createOrUpdateProfile(profile: UserProfile): Promise<void>;
     createSlot(slot: Slot): Promise<void>;
+    disableAnalyticsTracking(): Promise<void>;
+    enableAnalyticsTracking(): Promise<void>;
     fetchAllGigs(): Promise<Array<Gig>>;
     fetchAllMusicians(): Promise<Array<UserProfile>>;
     fetchAllProfiles(): Promise<Array<UserProfile>>;
@@ -80,15 +106,19 @@ export interface backendInterface {
     fetchSlots(userId: UserId): Promise<Array<Slot>>;
     fetchSlotsByMusician(musicianId: UserId): Promise<Array<Slot>>;
     fetchVenueGigs(userId: UserId): Promise<Array<Gig>>;
+    getAnalyticsSummary(): Promise<AnalyticsSummary>;
     getCallerUserProfile(): Promise<UserProfile | null>;
     getCallerUserRole(): Promise<UserRole>;
+    getUsageEvents(): Promise<Array<UsageEvent>>;
     getUserProfile(user: Principal): Promise<UserProfile | null>;
     getWalletState(userId: UserId): Promise<{
         paid: bigint;
         locked: bigint;
         available: bigint;
     }>;
+    isAnalyticsTrackingEnabled(): Promise<boolean>;
     isCallerAdmin(): Promise<boolean>;
+    recordUsageEvent(eventType: EventType, page: string | null, actionCategory: string | null, actionDetail: string | null): Promise<void>;
     saveCallerUserProfile(profile: UserProfile): Promise<void>;
     updateSlotAvailability(slotId: bigint, available: boolean): Promise<void>;
     uploadContract(gigId: bigint, blobId: string, contract: ExternalBlob): Promise<void>;

@@ -1,0 +1,122 @@
+{
+  "kind": "coverage_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-07T23:37:16.911Z",
+  "sources": {
+    "buildRequest": true,
+    "implementationPlan": true
+  },
+  "requirements": {
+    "total": 7,
+    "implemented": 4,
+    "items": [
+      {
+        "id": "REQ-1",
+        "summary": "Add built-in usage analytics storage and APIs in `backend/main.mo` to track app usage without third-party services. At minimum, store: (a) total unique users (principals), (b) total sessions, (c) per-day active users counts for the last N days, and (d) last-active timestamp per user.",
+        "status": "unknown",
+        "plannedFiles": [],
+        "matchedFiles": []
+      },
+      {
+        "id": "REQ-2",
+        "summary": "Implement an append-only usage log in `backend/main.mo` and a query API that returns a paginated slice of recent events for display in the admin dashboard. Each event must include timestamp, caller principal, and a simple event type (e.g., session_start, page_view).",
+        "status": "unknown",
+        "plannedFiles": [],
+        "matchedFiles": []
+      },
+      {
+        "id": "REQ-3",
+        "summary": "Add admin-only backend APIs in `backend/main.mo` to fetch the aggregated analytics summary and trends needed by the dashboard, and enforce access control using the existing authorization system (only admin principals can access admin analytics/log endpoints).",
+        "status": "unknown",
+        "plannedFiles": [],
+        "matchedFiles": []
+      },
+      {
+        "id": "REQ-4",
+        "summary": "Add frontend tracking that automatically records usage events to the backend: record a `session_start` when an authenticated user enters the app and record `page_view` (or equivalent) for the currently rendered screen. Ensure the tracking calls do not block UI rendering and gracefully no-op when the actor/identity is unavailable.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/hooks/useUsageTracking.ts",
+          "frontend/src/App.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/hooks/useUsageTracking.ts",
+          "frontend/src/App.tsx"
+        ]
+      },
+      {
+        "id": "REQ-5",
+        "summary": "Create a simplified `/admin` admin dashboard UI page (new React page component under `frontend/src/pages/`) that shows: total unique users, total sessions, daily active users trend (last N days), and a scrollable recent activity log table. Use existing shadcn UI components and Tailwind styling consistent with the app.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/pages/AdminDashboard.tsx",
+          "frontend/src/components/AccessDeniedScreen.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/pages/AdminDashboard.tsx",
+          "frontend/src/components/AccessDeniedScreen.tsx"
+        ]
+      },
+      {
+        "id": "REQ-6",
+        "summary": "Add navigation/entry to the admin dashboard without introducing a full routing framework: implement minimal path-based rendering so that visiting `/admin` renders the admin dashboard instead of the role dashboard. If the current user is not an admin, show an 'Access denied' screen for `/admin`.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/App.tsx",
+          "frontend/src/hooks/useQueries.ts",
+          "frontend/src/components/Header.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/App.tsx",
+          "frontend/src/hooks/useQueries.ts",
+          "frontend/src/components/Header.tsx"
+        ]
+      },
+      {
+        "id": "REQ-7",
+        "summary": "Add React Query hooks in `frontend/src/hooks/useQueries.ts` (or a new hooks file if needed) to call the new backend analytics endpoints: (1) fetch admin analytics summary, (2) fetch daily active trend, (3) fetch paginated logs, and (4) record tracking events.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/hooks/useQueries.ts",
+          "frontend/src/backend.d.ts",
+          "frontend/src/pages/AdminDashboard.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/hooks/useQueries.ts",
+          "frontend/src/backend.d.ts",
+          "frontend/src/pages/AdminDashboard.tsx"
+        ]
+      }
+    ]
+  },
+  "changedFiles": [
+    "backend/main.mo",
+    "build-request.json",
+    "build-template/Dockerfile",
+    "build-template/LICENSE",
+    "build-template/README.md",
+    "build-template/deploy.sh",
+    "build-template/icp.yaml",
+    "build-template/src/backend/canister.yaml",
+    "build-template/src/frontend/canister.yaml",
+    "caffeine.lock.json",
+    "feature_evidence.json",
+    "frontend-file-summaries.txt",
+    "frontend-implementation-plan.json",
+    "frontend/src/App.tsx",
+    "frontend/src/backend.d.ts",
+    "frontend/src/backend.ts",
+    "frontend/src/components/AccessDeniedScreen.tsx",
+    "frontend/src/components/Header.tsx",
+    "frontend/src/declarations/backend.did.d.ts",
+    "frontend/src/declarations/backend.did.js",
+    "frontend/src/hooks/useInternetIdentity.ts",
+    "frontend/src/hooks/useQueries.ts",
+    "frontend/src/hooks/useUsageTracking.ts",
+    "frontend/src/pages/AdminDashboard.tsx",
+    "project_state.json",
+    "scratch/component-selection.json",
+    "spec.md",
+    "spec_vs_diff_report.json"
+  ]
+}

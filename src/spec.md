@@ -1,112 +1,15 @@
-# Encoreats - Live Music Marketplace
+# Specification
 
-A B2B2C marketplace connecting venues, musicians, and customers for live music events.
+## Summary
+**Goal:** Add built-in, on-canister usage analytics and a minimal admin dashboard in Encoreats to view usage KPIs, daily trends, and recent activity—without third-party analytics.
 
-## User Roles
+**Planned changes:**
+- Add on-canister analytics storage and update/query APIs in `backend/main.mo` to track unique users (principals), total sessions, per-day active user counts for the last N days, and per-user last-active timestamps.
+- Add an append-only usage log in `backend/main.mo` plus an admin-only, paginated query endpoint returning recent events (reverse-chronological) with timestamp, caller principal, and event type.
+- Enforce admin-only access for analytics summary/trends and log endpoints using the existing `AccessControl.isAdmin(accessControlState, caller)` authorization pattern.
+- Add frontend automatic tracking to record `session_start` on authenticated app entry and `page_view` (or equivalent) for rendered screens; ensure calls are non-blocking and no-op safely if actor/identity is unavailable.
+- Create a simplified `/admin` page under `frontend/src/pages/` using existing shadcn UI + Tailwind to show KPI cards (unique users, sessions), a daily active users trend visualization, and a scrollable recent activity log table with loading/empty/error states.
+- Implement minimal path-based rendering so `/admin` shows the admin dashboard (or an "Access denied" screen for non-admins) without introducing a full routing framework.
+- Add React Query hooks (in `frontend/src/hooks/useQueries.ts` or a new hooks file if needed) for: fetching admin analytics summary, fetching daily active trend, fetching paginated logs, and recording tracking events.
 
-### Venues
-- Book musicians for events
-- Manage event listings
-- Generate marketing assets
-- Track ROI and analytics
-- Verify musician attendance via QR scanning
-
-### Musicians
-- Manage availability calendar
-- Track gigs and payment status
-- Generate QR tickets for events
-- View wallet with three payment states
-
-### Customers
-- Browse upcoming events
-- Search by city, date, and genre
-- Reserve tables at events
-
-## Core Features
-
-### Authentication
-- Internet Identity integration for all user roles
-- Role-based access control (venue/musician/customer)
-
-### Event Management
-- Venues can search and filter musicians by genre, budget, and availability
-- Booking workflow with contract generation
-- Event status tracking (pending, confirmed, completed)
-- QR code generation for event verification
-
-### Payment System (Mock Escrow)
-- Three wallet states: Locked, Available, Paid
-- Funds locked on booking confirmation
-- Automatic release 24 hours after event or upon QR verification
-- Payment tracking and history
-
-### Analytics & ROI
-- Revenue tracking for venues
-- Attendance counting
-- Comparison charts showing gig night vs average revenue
-- Dashboard analytics for business insights
-
-### Marketing Tools
-- Auto-generated 9:16 marketing images with artist photo, venue, and date
-- Event promotion materials
-
-## Backend Data Storage
-
-### Profiles
-- User ID, role, name, phone, bio, rating, location
-- Role-based profile management
-
-### Gigs
-- Gig ID, venue ID, musician ID, date, price, status, contract URL
-- Booking and event management
-
-### Transactions
-- Mock escrow system with payment state tracking
-- Transaction history and wallet management
-
-### ROI Data
-- Gig-specific sales and attendance data
-- Analytics for venue performance tracking
-
-## User Interface
-
-### Design Theme
-- Dark mode with neon accents (purple, electric blue, hot pink)
-- Glassmorphism UI elements
-- Mobile-first responsive design
-- Poppins font for headings, Inter for body text
-
-### Public Pages
-- Landing page with hero section
-- Event search and filtering
-- Event detail pages with booking options
-
-### Venue Dashboard
-- Musician search and booking interface
-- ROI analytics and reporting
-- Marketing asset generation
-- QR scanner for attendance verification
-
-### Musician Dashboard
-- Availability calendar management
-- Wallet view with payment states
-- QR ticket generation for events
-- Gig history and earnings tracking
-
-## Technical Requirements
-
-### Frontend Components
-- Authorization system
-- QR code generation and scanning
-- Blob storage for images and documents
-- PDF contract generation using jspdf and html2canvas
-
-### Search and Filtering
-- Event search by location, date, genre
-- Musician filtering by availability, genre, budget
-- Real-time availability checking
-
-### File Management
-- Contract PDF generation and storage
-- Marketing image creation and storage
-- Profile image handling
+**User-visible outcome:** Admin users can visit `/admin` to see total users, total sessions, daily active user trends, and a paginated recent activity log; non-admin users visiting `/admin` see an access denied message, and normal app usage is tracked automatically in the background.
