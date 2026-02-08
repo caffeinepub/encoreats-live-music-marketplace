@@ -5,20 +5,18 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Music, LogOut, User, Shield } from 'lucide-react';
+import { clearSelectedRole } from '../utils/urlParams';
 
 export default function Header() {
   const { clear } = useInternetIdentity();
-  const { data: userProfile } = useGetCallerUserProfile();
-  const { data: isAdmin } = useIsCallerAdmin();
   const queryClient = useQueryClient();
+  const { data: userProfile } = useGetCallerUserProfile();
+  const { data: isAdmin = false } = useIsCallerAdmin();
 
   const handleLogout = async () => {
     await clear();
     queryClient.clear();
-  };
-
-  const handleAdminClick = () => {
-    window.location.href = '/admin';
+    clearSelectedRole(); // Clear selected role on logout
   };
 
   const getInitials = (name: string) => {
@@ -40,44 +38,44 @@ export default function Header() {
           </span>
         </div>
 
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="relative h-10 w-10 rounded-full">
-              <Avatar className="h-10 w-10 border-2 border-chart-1">
-                <AvatarFallback className="bg-chart-1/20 text-chart-1 font-semibold">
-                  {userProfile ? getInitials(userProfile.name) : 'U'}
-                </AvatarFallback>
-              </Avatar>
+        <div className="flex items-center gap-4">
+          {isAdmin && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => (window.location.hash = '/admin')}
+              className="gap-2 border-chart-1/50 text-chart-1 hover:bg-chart-1/10"
+            >
+              <Shield className="h-4 w-4" />
+              Admin
             </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56" align="end">
-            <DropdownMenuLabel>
-              <div className="flex flex-col space-y-1">
-                <p className="text-sm font-medium leading-none">{userProfile?.name}</p>
-                <p className="text-xs leading-none text-muted-foreground capitalize">{userProfile?.role}</p>
-              </div>
-            </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem disabled>
-              <User className="mr-2 h-4 w-4" />
-              <span>Profile Settings</span>
-            </DropdownMenuItem>
-            {isAdmin && (
-              <>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleAdminClick}>
-                  <Shield className="mr-2 h-4 w-4" />
-                  <span>Admin Dashboard</span>
-                </DropdownMenuItem>
-              </>
-            )}
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleLogout} className="text-destructive focus:text-destructive">
-              <LogOut className="mr-2 h-4 w-4" />
-              <span>Log out</span>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+          )}
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+                <Avatar className="h-10 w-10 border-2 border-chart-1/50">
+                  <AvatarFallback className="bg-chart-1/20 text-chart-1 font-semibold">
+                    {userProfile ? getInitials(userProfile.name) : <User className="h-5 w-5" />}
+                  </AvatarFallback>
+                </Avatar>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56" align="end" forceMount>
+              <DropdownMenuLabel className="font-normal">
+                <div className="flex flex-col space-y-1">
+                  <p className="text-sm font-medium leading-none">{userProfile?.name || 'User'}</p>
+                  <p className="text-xs leading-none text-muted-foreground capitalize">{userProfile?.role || 'Role'}</p>
+                </div>
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={handleLogout} className="text-destructive focus:text-destructive cursor-pointer">
+                <LogOut className="mr-2 h-4 w-4" />
+                <span>Log out</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
     </header>
   );

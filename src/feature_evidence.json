@@ -2,58 +2,12 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-add-frontend-tracking-that-automatically-records-usage-events-to-the-backend-record-a-session-start-when-an-authenticated-user-enters-the-app-and-record-page-view-or-equivalent-for-the-currently-rendered-screen-ensure-the-tracking-calls-do-not-block-ui-rendering-and-gracefully-no-op-when-the-actor-identity-is-unavailable",
-      "featureTitle": "Add frontend tracking that automatically records usage events to the backend: record a `session_start` when an authenticated user enters the app and record `page_view` (or equivalent) for the currently rendered screen. Ensure the tracking calls do not block UI rendering and gracefully no-op when the actor/identity is unavailable.",
+      "featureId": "feature-add-an-explicit-role-selection-step-to-the-login-experience-so-a-user-can-choose-to-continue-as-venue-musician-or-customer-before-authenticating-and-ensure-the-selected-role-is-carried-into-profile-creation",
+      "featureTitle": "Add an explicit role selection step to the login experience so a user can choose to continue as \"Venue\", \"Musician\", or \"Customer\" before authenticating, and ensure the selected role is carried into profile creation.",
       "files": [
-        "frontend/src/App.tsx",
-        "frontend/src/hooks/useUsageTracking.ts"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "blob-storage@4.0.0",
-        "qr-code@1.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "camera@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-4"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-create-a-simplified-admin-admin-dashboard-ui-page-new-react-page-component-under-frontend-src-pages-that-shows-total-unique-users-total-sessions-daily-active-users-trend-last-n-days-and-a-scrollable-recent-activity-log-table-use-existing-shadcn-ui-components-and-tailwind-styling-consistent-with-the-app",
-      "featureTitle": "Create a simplified `/admin` admin dashboard UI page (new React page component under `frontend/src/pages/`) that shows: total unique users, total sessions, daily active users trend (last N days), and a scrollable recent activity log table. Use existing shadcn UI components and Tailwind styling consistent with the app.",
-      "files": [
-        "frontend/src/components/AccessDeniedScreen.tsx",
-        "frontend/src/pages/AdminDashboard.tsx"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "blob-storage@4.0.0",
-        "qr-code@1.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "camera@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-5"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-add-navigation-entry-to-the-admin-dashboard-without-introducing-a-full-routing-framework-implement-minimal-path-based-rendering-so-that-visiting-admin-renders-the-admin-dashboard-instead-of-the-role-dashboard-if-the-current-user-is-not-an-admin-show-an-access-denied-screen-for-admin",
-      "featureTitle": "Add navigation/entry to the admin dashboard without introducing a full routing framework: implement minimal path-based rendering so that visiting `/admin` renders the admin dashboard instead of the role dashboard. If the current user is not an admin, show an 'Access denied' screen for `/admin`.",
-      "files": [
-        "frontend/src/App.tsx",
         "frontend/src/components/Header.tsx",
-        "frontend/src/hooks/useQueries.ts"
+        "frontend/src/components/ProfileSetup.tsx",
+        "frontend/src/utils/urlParams.ts"
       ],
       "components": [
         "authorization@4.0.0",
@@ -67,16 +21,15 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-6"
+        "REQ-8"
       ],
       "confidence": "high"
     },
     {
-      "featureId": "feature-add-react-query-hooks-in-frontend-src-hooks-usequeries-ts-or-a-new-hooks-file-if-needed-to-call-the-new-backend-analytics-endpoints-1-fetch-admin-analytics-summary-2-fetch-daily-active-trend-3-fetch-paginated-logs-and-4-record-tracking-events",
-      "featureTitle": "Add React Query hooks in `frontend/src/hooks/useQueries.ts` (or a new hooks file if needed) to call the new backend analytics endpoints: (1) fetch admin analytics summary, (2) fetch daily active trend, (3) fetch paginated logs, and (4) record tracking events.",
+      "featureId": "feature-update-the-landing-page-call-to-action-buttons-to-provide-three-distinct-continue-as-join-as-login-options-venue-musician-customer-while-continuing-to-use-internet-identity-for-authentication",
+      "featureTitle": "Update the Landing page call-to-action buttons to provide three distinct \"Continue as\" / \"Join as\" login options (Venue, Musician, Customer) while continuing to use Internet Identity for authentication.",
       "files": [
-        "frontend/src/hooks/useQueries.ts",
-        "frontend/src/pages/AdminDashboard.tsx"
+        "frontend/src/pages/LandingPage.tsx"
       ],
       "components": [
         "authorization@4.0.0",
@@ -90,7 +43,7 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-7"
+        "REQ-9"
       ],
       "confidence": "high"
     }

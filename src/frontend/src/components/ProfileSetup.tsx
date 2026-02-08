@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useInternetIdentity } from '../hooks/useInternetIdentity';
 import { useSaveCallerUserProfile } from '../hooks/useQueries';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -10,17 +10,29 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Music, Building2, Users } from 'lucide-react';
 import { Role, type UserProfile } from '../backend';
 import { toast } from 'sonner';
+import { getSelectedRole, clearSelectedRole } from '../utils/urlParams';
 
 export default function ProfileSetup() {
   const { identity } = useInternetIdentity();
   const saveProfile = useSaveCallerUserProfile();
+  
+  // Get pre-selected role from session storage (set during login)
+  const preSelectedRole = getSelectedRole();
+  
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
     bio: '',
     location: '',
-    role: 'musician' as 'venue' | 'musician' | 'customer',
+    role: (preSelectedRole || 'musician') as 'venue' | 'musician' | 'customer',
   });
+
+  // Update role if pre-selected role changes
+  useEffect(() => {
+    if (preSelectedRole) {
+      setFormData(prev => ({ ...prev, role: preSelectedRole }));
+    }
+  }, [preSelectedRole]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,7 +58,12 @@ export default function ProfileSetup() {
       contractBlob: undefined,
     };
 
-    saveProfile.mutate(profile);
+    saveProfile.mutate(profile, {
+      onSuccess: () => {
+        // Clear the selected role after successful profile creation
+        clearSelectedRole();
+      }
+    });
   };
 
   return (

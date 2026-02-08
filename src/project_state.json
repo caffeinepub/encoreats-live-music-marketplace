@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 3,
-  "summary": "Encoreats app to include built-in usage analytics and a pro admin dashboard (/admin) with charts, trends, logs, and access control to monitor user activity.",
+  "projectStateVersion": 5,
+  "summary": "Encoreats app includes built-in usage analytics and a pro admin dashboard (/admin) plus role-based access for consumer, musician, and venue, and now needs a login flow option to select the user role (consumer/musician/venue).",
   "architectural_notes": [
     "Implement in-app analytics without third-party services; track/store usage metrics in backend and expose them to a password-gated /admin dashboard."
   ],
@@ -41,6 +41,22 @@
         "REQ-7"
       ],
       "version": 1
+    },
+    {
+      "id": "feature-add-an-explicit-role-selection-step-to-the-login-experience-so-a-user-can-choose-to-continue-as-venue-musician-or-customer-before-authenticating-and-ensure-the-selected-role-is-carried-into-profile-creation",
+      "title": "Add an explicit role selection step to the login experience so a user can choose to continue as \"Venue\", \"Musician\", or \"Customer\" before authenticating, and ensure the selected role is carried into profile creation.",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-landing-page-call-to-action-buttons-to-provide-three-distinct-continue-as-join-as-login-options-venue-musician-customer-while-continuing-to-use-internet-identity-for-authentication",
+      "title": "Update the Landing page call-to-action buttons to provide three distinct \"Continue as\" / \"Join as\" login options (Venue, Musician, Customer) while continuing to use Internet Identity for authentication.",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "version": 1
     }
   ],
   "new_feature_requests": [
@@ -78,6 +94,12 @@
       "reqIds": [
         "REQ-3"
       ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-6",
+      "summary": "Add a login flow option to choose role (consumer, musician, venue) during/after authentication so users can enter the correct dashboard.",
+      "reqIds": [],
       "status": "pending"
     }
   ],

@@ -4,9 +4,10 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { Music, MapPin, Calendar, Search, Sparkles } from 'lucide-react';
+import { Music, MapPin, Calendar, Search, Sparkles, Building2, Users } from 'lucide-react';
 import { SiFacebook, SiX, SiInstagram } from 'react-icons/si';
 import { useState } from 'react';
+import { setSelectedRole } from '../utils/urlParams';
 
 export default function LandingPage() {
   const { login, loginStatus } = useInternetIdentity();
@@ -14,6 +15,19 @@ export default function LandingPage() {
   const [searchQuery, setSearchQuery] = useState('');
 
   const isLoggingIn = loginStatus === 'logging-in';
+
+  const handleRoleLogin = async (role: 'venue' | 'musician' | 'customer') => {
+    setSelectedRole(role);
+    try {
+      await login();
+    } catch (error: any) {
+      console.error('Login error:', error);
+      if (error.message === 'User is already authenticated') {
+        // Handle edge case where user is already authenticated
+        await login();
+      }
+    }
+  };
 
   const filteredGigs = gigs.filter((gig) =>
     gig.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -35,7 +49,7 @@ export default function LandingPage() {
               Encoreats
             </span>
           </div>
-          <Button onClick={login} disabled={isLoggingIn} size="lg" className="bg-chart-1 hover:bg-chart-1/90">
+          <Button onClick={() => handleRoleLogin('venue')} disabled={isLoggingIn} size="lg" className="bg-chart-1 hover:bg-chart-1/90">
             {isLoggingIn ? 'Connecting...' : 'Get Started'}
           </Button>
         </div>
@@ -63,11 +77,34 @@ export default function LandingPage() {
               Book gigs, manage events, and experience live music like never before.
             </p>
             <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-              <Button onClick={login} disabled={isLoggingIn} size="lg" className="bg-chart-1 hover:bg-chart-1/90 text-lg h-14 px-8">
+              <Button 
+                onClick={() => handleRoleLogin('venue')} 
+                disabled={isLoggingIn} 
+                size="lg" 
+                className="bg-chart-1 hover:bg-chart-1/90 text-lg h-14 px-8 gap-2"
+              >
+                <Building2 className="h-5 w-5" />
                 {isLoggingIn ? 'Connecting...' : 'Join as Venue'}
               </Button>
-              <Button onClick={login} disabled={isLoggingIn} size="lg" variant="outline" className="border-chart-4 text-chart-4 hover:bg-chart-4/10 text-lg h-14 px-8">
+              <Button 
+                onClick={() => handleRoleLogin('musician')} 
+                disabled={isLoggingIn} 
+                size="lg" 
+                variant="outline" 
+                className="border-chart-4 text-chart-4 hover:bg-chart-4/10 text-lg h-14 px-8 gap-2"
+              >
+                <Music className="h-5 w-5" />
                 {isLoggingIn ? 'Connecting...' : 'Join as Musician'}
+              </Button>
+              <Button 
+                onClick={() => handleRoleLogin('customer')} 
+                disabled={isLoggingIn} 
+                size="lg" 
+                variant="outline" 
+                className="border-chart-2 text-chart-2 hover:bg-chart-2/10 text-lg h-14 px-8 gap-2"
+              >
+                <Users className="h-5 w-5" />
+                {isLoggingIn ? 'Connecting...' : 'Join as Customer'}
               </Button>
             </div>
           </div>
@@ -141,7 +178,7 @@ export default function LandingPage() {
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <Button onClick={login} className="w-full bg-chart-1 hover:bg-chart-1/90" disabled={isLoggingIn}>
+                    <Button onClick={() => handleRoleLogin('customer')} className="w-full bg-chart-1 hover:bg-chart-1/90" disabled={isLoggingIn}>
                       {isLoggingIn ? 'Connecting...' : 'Reserve Table'}
                     </Button>
                   </CardContent>
@@ -164,7 +201,7 @@ export default function LandingPage() {
             <Card className="border-border/50 bg-background/50 backdrop-blur-sm">
               <CardHeader>
                 <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-chart-1/20">
-                  <Music className="h-6 w-6 text-chart-1" />
+                  <Building2 className="h-6 w-6 text-chart-1" />
                 </div>
                 <CardTitle>For Venues</CardTitle>
                 <CardDescription className="text-base">
@@ -176,7 +213,7 @@ export default function LandingPage() {
             <Card className="border-border/50 bg-background/50 backdrop-blur-sm">
               <CardHeader>
                 <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-chart-4/20">
-                  <Calendar className="h-6 w-6 text-chart-4" />
+                  <Music className="h-6 w-6 text-chart-4" />
                 </div>
                 <CardTitle>For Musicians</CardTitle>
                 <CardDescription className="text-base">
@@ -188,7 +225,7 @@ export default function LandingPage() {
             <Card className="border-border/50 bg-background/50 backdrop-blur-sm">
               <CardHeader>
                 <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-chart-2/20">
-                  <MapPin className="h-6 w-6 text-chart-2" />
+                  <Users className="h-6 w-6 text-chart-2" />
                 </div>
                 <CardTitle>For Music Lovers</CardTitle>
                 <CardDescription className="text-base">
@@ -220,7 +257,7 @@ export default function LandingPage() {
               </a>
             </div>
             <p className="text-sm text-muted-foreground">
-              © 2025. Built with ❤️ using{' '}
+              © 2026. Built with ❤️ using{' '}
               <a href="https://caffeine.ai" target="_blank" rel="noopener noreferrer" className="text-chart-1 hover:underline">
                 caffeine.ai
               </a>
