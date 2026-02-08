@@ -207,35 +207,36 @@ export function getSecretParameter(paramName: string): string | null {
     return getSecretFromHash(paramName);
 }
 
-// Role selection helpers for login flow
-const SELECTED_ROLE_KEY = 'encoreats_selected_role';
+/**
+ * Role selection helpers for persisting user role choice through Internet Identity login redirect
+ */
+
+const SELECTED_ROLE_KEY = 'selectedRole';
 
 /**
- * Stores the user's selected role before login
- * This persists through the Internet Identity redirect
+ * Stores the selected role in sessionStorage before login
+ * This persists the user's role choice through the Internet Identity redirect
  *
- * @param role - The role selected by the user (venue, musician, or customer)
+ * @param role - The role selected by the user ('venue', 'musician', or 'customer')
  */
 export function setSelectedRole(role: 'venue' | 'musician' | 'customer'): void {
     storeSessionParameter(SELECTED_ROLE_KEY, role);
 }
 
 /**
- * Retrieves the user's pre-selected role
+ * Retrieves the selected role from sessionStorage
+ * Used after login to determine which role the user chose
  *
  * @returns The selected role if found, null otherwise
  */
-export function getSelectedRole(): 'venue' | 'musician' | 'customer' | null {
-    const role = getSessionParameter(SELECTED_ROLE_KEY);
-    if (role === 'venue' || role === 'musician' || role === 'customer') {
-        return role;
-    }
-    return null;
+export function getSelectedRole(): string | null {
+    return getSessionParameter(SELECTED_ROLE_KEY);
 }
 
 /**
- * Clears the stored selected role
- * Should be called after profile creation or on logout
+ * Clears the selected role from sessionStorage
+ * Should be called after the role has been used to create the user profile
+ * or when the user logs out
  */
 export function clearSelectedRole(): void {
     clearSessionParameter(SELECTED_ROLE_KEY);

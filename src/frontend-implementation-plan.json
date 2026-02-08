@@ -1,50 +1,96 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Role selection at login and profile setup",
+  "title": "Repository-root Jest + React Testing Library test suite in /tests",
   "requirements": [
     {
-      "id": "REQ-8",
-      "summary": "Persist a pre-login role choice (Venue/Musician/Customer) in the browser session and preselect it during Profile Setup for new users.",
+      "id": "REQ-10",
+      "summary": "Add Jest + React Testing Library tests covering LandingPage role login, App auth/profile/admin gating, role dashboards, and usage tracking behaviors without requiring network/canisters.",
       "acceptanceCriteria": [
-        "On the public Landing page, the user can choose one of three options: Venue, Musician, Customer, with clear English labels.",
-        "Choosing a role and then logging in persists the selected role for the current browser session (e.g., via sessionStorage) so it survives the Internet Identity redirect/roundtrip.",
-        "If the authenticated user has no profile yet and is sent to Profile Setup, the role field is pre-selected to the role chosen on the Landing page.",
-        "If no role was selected before login, Profile Setup defaults to the current existing default behavior (musician).",
-        "The change does not require editing any files under the frontend immutable paths list (e.g., do not edit `frontend/src/hooks/useInternetIdentity.ts`)."
+        "A `/tests` directory exists at the repository root and contains all test code (test files + any test utilities/mocks).",
+        "Tests include coverage for: LandingPage role buttons (Venue/Musician/Customer) calling role selection and triggering login; App renders LandingPage when unauthenticated; App renders ProfileSetup when authenticated and userProfile is null; App renders AdminDashboard at `/admin` for admin users and AccessDeniedScreen for non-admin users; App renders correct role dashboard based on `userProfile.role`; usage tracking calls trackPageView on mount when authenticated and does not run when unauthenticated.",
+        "All tests can be executed in a JS DOM environment and do not require a running Internet Computer canister or network connectivity."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/utils/urlParams.ts",
-          "operation": "modify",
-          "description": "Add role-selection session helpers (e.g., set/get/clear for a single selected-role sessionStorage key) built on the existing sessionStorage utilities so the chosen role survives the Internet Identity roundtrip."
+          "path": "frontend/../tests/jest.config.ts",
+          "operation": "create",
+          "description": "Create Jest configuration for a JS DOM environment with TypeScript support, React Testing Library setup, and module path mapping so tests can import existing app modules (e.g., '@/...' alias) while staying fully offline/deterministic."
         },
         {
-          "path": "frontend/src/components/ProfileSetup.tsx",
-          "operation": "modify",
-          "description": "Read the persisted selected role on mount and preselect the role RadioGroup accordingly for first-time users; if no stored role exists, keep the current default (musician). Optionally clear the stored role after successful profile creation to avoid stale role carryover within the same session."
+          "path": "frontend/../tests/setupTests.ts",
+          "operation": "create",
+          "description": "Add global Jest test setup (e.g., jest-dom matchers, stable test environment defaults, and safe browser API shims used by the app)."
         },
         {
-          "path": "frontend/src/components/Header.tsx",
-          "operation": "modify",
-          "description": "On logout, clear the stored selected-role session parameter (in addition to existing query cache clearing) so role choice does not leak across authenticated sessions in the same browser."
+          "path": "frontend/../tests/__tests__/LandingPage.role-login.test.tsx",
+          "operation": "create",
+          "description": "Add RTL tests for LandingPage: verify the role-based buttons (Venue/Musician/Customer) call role selection (via urlParams) and trigger Internet Identity login (via mocked useInternetIdentity), including disabled state when logging in."
+        },
+        {
+          "path": "frontend/../tests/__tests__/App.auth-routing-gating.test.tsx",
+          "operation": "create",
+          "description": "Add RTL tests for App authentication gating and minimal path-based routing: unauthenticated renders LandingPage; authenticated+no profile renders ProfileSetup; `/admin` renders AdminDashboard for admins and AccessDeniedScreen for non-admins; role-based dashboard rendering based on `userProfile.role`. Use module mocks for hooks/pages to keep tests fast and deterministic."
+        },
+        {
+          "path": "frontend/../tests/__tests__/useUsageTracking.behavior.test.tsx",
+          "operation": "create",
+          "description": "Add hook-level tests validating usage tracking behavior: `session_start` is recorded once per session when authenticated; `trackPageView` records `page_view` when authenticated and does nothing when unauthenticated. Mock useRecordUsageEvent and useInternetIdentity so no backend calls occur."
+        },
+        {
+          "path": "frontend/../tests/__mocks__/appModules.ts",
+          "operation": "create",
+          "description": "Create shared mock helpers/fixtures for common app module mocks (e.g., simple stub components for dashboards and AccessDeniedScreen, and stable fake UserProfile objects) to reduce duplication across tests."
         }
       ]
     },
     {
-      "id": "REQ-9",
-      "summary": "Update Landing page CTAs to provide three distinct role-specific Internet Identity login buttons with consistent loading/disabled behavior.",
+      "id": "REQ-11",
+      "summary": "Provide deterministic test harness utilities in /tests including render helper with providers and module mocks for auth, backend-query hooks, and usage tracking without modifying immutable app source files.",
       "acceptanceCriteria": [
-        "Landing page shows three role-specific login buttons (Venue, Musician, Customer).",
-        "Clicking any of the three buttons initiates the existing Internet Identity login flow.",
-        "Buttons show an appropriate disabled/loading state when login is in progress, consistent with the current UI behavior.",
-        "All user-facing text for these buttons is in English."
+        "`/tests` includes reusable helpers (e.g., a `renderWithProviders` utility) that can render `App` and pages without runtime errors.",
+        "Tests mock `useInternetIdentity`, `useGetCallerUserProfile`, `useIsCallerAdmin`, and usage tracking/recording paths so that each authentication/admin scenario can be simulated.",
+        "No changes are required to any files under `frontend/src/hooks/useInternetIdentity.ts`, `frontend/src/hooks/useActor.ts`, or `frontend/src/components/ui` to enable testing."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/pages/LandingPage.tsx",
-          "operation": "modify",
-          "description": "Replace/augment existing generic CTAs with three explicit role-specific buttons (Continue/Join as Venue, Musician, Customer). Each button should store the chosen role via the new session helper before calling the existing Internet Identity login() function, and should reflect the current loginStatus disabled/loading state."
+          "path": "frontend/../tests/test-utils/renderWithProviders.tsx",
+          "operation": "create",
+          "description": "Create a shared RTL render helper that wraps UI under required providers (at minimum React Query QueryClientProvider with a deterministic client configuration) so App/pages render reliably in tests."
+        },
+        {
+          "path": "frontend/../tests/test-utils/mockInternetIdentity.ts",
+          "operation": "create",
+          "description": "Add a reusable Jest mock factory for `useInternetIdentity` to simulate authentication states (unauthenticated, authenticated, initializing, logging-in) and to assert login calls from LandingPage without touching immutable hook files."
+        },
+        {
+          "path": "frontend/../tests/test-utils/mockQueries.ts",
+          "operation": "create",
+          "description": "Add reusable mocks for backend-query hooks used by App and LandingPage (including `useGetCallerUserProfile`, `useIsCallerAdmin`, `useFetchAllGigs`, and `useRecordUsageEvent`) so tests can simulate admin state and backend data without network/canisters."
+        },
+        {
+          "path": "frontend/../tests/test-utils/mockUrlParams.ts",
+          "operation": "create",
+          "description": "Add reusable mock helpers for `frontend/src/utils/urlParams` functions (e.g., `setSelectedRole`, `getSelectedRole`, `clearSelectedRole`) to verify role selection behavior deterministically."
+        },
+        {
+          "path": "frontend/../tests/test-utils/mockUI.tsx",
+          "operation": "create",
+          "description": "Add lightweight mocks/stubs for UI-only imports that are irrelevant to logic assertions but can complicate tests (e.g., ThemeProvider, sonner Toaster) while respecting the constraint to not modify any files under `frontend/src/components/ui`."
+        }
+      ]
+    },
+    {
+      "id": "REQ-12",
+      "summary": "Add a developer-friendly /tests README describing how to run the suite, what is mocked, and what modules are covered.",
+      "acceptanceCriteria": [
+        "`/tests/README.md` exists and explains: how to run tests, what is mocked, and which high-level modules are covered (LandingPage, App routing/auth gating, admin gating, dashboards, usage tracking)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/../tests/README.md",
+          "operation": "create",
+          "description": "Document local test execution instructions (Jest + RTL), what is mocked (Internet Identity, backend-query hooks, usage tracking recorder), and coverage areas (LandingPage role login, App auth/profile gating, `/admin` gating, role dashboards, usage tracking)."
         }
       ]
     }

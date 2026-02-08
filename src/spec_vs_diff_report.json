@@ -1,25 +1,57 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-02-08T00:00:03.412Z",
-  "summary": "Diff implements role persistence via sessionStorage (set/get/clear), preselects role in Profile Setup with default musician, and clears stored role on logout/profile creation. LandingPage introduces role-aware login handler but the provided truncated snippet only clearly shows a single header CTA wired to the venue role; the presence of three distinct role buttons cannot be fully verified from the visible diff excerpt.",
+  "generatedAt": "2026-02-08T00:28:38.996Z",
+  "summary": "The diff does not add a repository-root /tests folder, Jest/RTL test suite, test utilities/mocks, or a /tests README. Instead, it modifies existing frontend source files (ProfileSetup and urlParams) to support role pre-selection via session storage/URL params, which is outside the BuildRequest scope (tests-only).",
   "missing_requirements": [
     {
-      "id": "REQ-9",
-      "requirement": "Landing page shows three role-specific login buttons (Venue, Musician, Customer), each initiating the existing Internet Identity login flow, with loading/disabled state, and English labels.",
-      "reason": "In the visible LandingPage snippet, the sticky header shows only one CTA button ('Get Started') that calls handleRoleLogin('venue'). The truncated excerpt does not show the other two role buttons or their labels/states, so the AC cannot be confirmed from the provided diff evidence.",
+      "id": "REQ-10",
+      "requirement": "Create a complete repository-root `/tests` folder containing a working Jest + React Testing Library frontend test suite covering LandingPage role login buttons, App auth gating, `/admin` admin vs non-admin gating, role dashboards, ProfileSetup when no profile, and usage tracking behaviors.",
+      "reason": "No `/tests` directory or any test files/config are added in the diff (\"Added: 0\"). The only changes shown are modifications to existing frontend source files.",
       "evidence": [
-        "frontend/src/pages/LandingPage.tsx"
+        "File diff summary: Added: 0, Modified: 4, Removed: 0",
+        "frontend/src/components/ProfileSetup.tsx",
+        "frontend/src/utils/urlParams.ts",
+        "frontend-file-summaries.txt"
+      ]
+    },
+    {
+      "id": "REQ-11",
+      "requirement": "Add deterministic test harness utilities inside `/tests` (e.g., `renderWithProviders`) and module mocks for `useInternetIdentity`, `useGetCallerUserProfile`, `useIsCallerAdmin`, and usage tracking so scenarios can be simulated without editing immutable hook/UI files.",
+      "reason": "No `/tests` utilities or mocks are added; no evidence of render helpers or Jest module mocks in the diff (\"Added: 0\").",
+      "evidence": [
+        "File diff summary: Added: 0, Modified: 4, Removed: 0"
+      ]
+    },
+    {
+      "id": "REQ-12",
+      "requirement": "Include a minimal developer-friendly testing README inside `/tests` explaining how to run tests, what is mocked, and what modules are covered.",
+      "reason": "No `/tests/README.md` is added (\"Added: 0\").",
+      "evidence": [
+        "File diff summary: Added: 0, Modified: 4, Removed: 0"
       ]
     }
   ],
-  "hallucinated_features": [],
-  "confidence": 0.62,
+  "hallucinated_features": [
+    {
+      "description": "Modified `ProfileSetup` to pre-select the user role from session storage/URL params and clear it after profile creation.",
+      "reason": "The BuildRequest asks only to add a Jest + React Testing Library `/tests` folder and related test utilities/README; it does not request changes to application components/role-selection behavior.",
+      "evidence": [
+        "frontend/src/components/ProfileSetup.tsx"
+      ]
+    },
+    {
+      "description": "Expanded/added URL parameter + sessionStorage persistence utilities (e.g., get/store/clear session parameters, persisted URL parameter behavior, hash query parsing).",
+      "reason": "The BuildRequest is specifically about adding a `/tests` suite and test documentation; it does not request new URL/session parameter utilities or behavioral changes.",
+      "evidence": [
+        "frontend/src/utils/urlParams.ts"
+      ]
+    }
+  ],
+  "confidence": 0.92,
   "changed_files": [
     "frontend-file-summaries.txt",
-    "frontend/src/components/Header.tsx",
     "frontend/src/components/ProfileSetup.tsx",
-    "frontend/src/pages/LandingPage.tsx",
     "frontend/src/utils/urlParams.ts",
     "project_state.json"
   ]

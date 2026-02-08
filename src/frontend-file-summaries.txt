@@ -6,7 +6,7 @@
   "frontend/src/pages/MusicianDashboard.tsx": "Musician dashboard with earnings stats, gig management, availability calendar, wallet view with payment states, and QR ticket generation using correct enum status values.",
   "frontend/src/pages/CustomerDashboard.tsx": "Customer dashboard for browsing and searching upcoming live music events with proper enum status display and filtering capabilities.",
   "frontend/src/components/Header.tsx": "Sticky header component with Encoreats branding, user avatar dropdown menu, admin dashboard link for admin users, and logout functionality that clears the selected role from session storage.",
-  "frontend/src/components/ProfileSetup.tsx": "Profile setup form that reads and pre-selects the role chosen during login from session storage, allowing new users to complete their profile with the role they selected on the landing page.",
+  "frontend/src/components/ProfileSetup.tsx": "Profile setup form that reads and pre-selects the role chosen during login from session storage with type-safe validation, allowing new users to complete their profile with the role they selected on the landing page.",
   "frontend/src/components/MusicianSearch.tsx": "Searchable musician directory with filtering by name, location, and bio, displaying musician cards with ratings and booking buttons.",
   "frontend/src/components/BookingDialog.tsx": "Modal dialog for venues to book musicians with event details form, using the correct Variant_pending_completed_confirmed enum for gig status.",
   "frontend/src/components/QRScannerDialog.tsx": "QR code scanner dialog using camera to verify musician attendance at events, with real-time scanning feedback and automatic gig verification.",
@@ -18,5 +18,17 @@
   "frontend/src/hooks/useUsageTracking.ts": "React hook that automatically tracks user sessions and provides methods to track page views and actions, silently handling errors to prevent app disruption.",
   "frontend/src/components/AccessDeniedScreen.tsx": "Simple access denied screen component displayed to non-admin users attempting to access restricted admin areas.",
   "frontend/src/pages/AdminDashboard.tsx": "Admin dashboard page displaying KPI cards for user metrics, and a table of recent activity logs with proper loading, empty, and error states.",
-  "frontend/src/utils/urlParams.ts": "Utility functions for URL parameter management and session storage, including new role selection helpers (setSelectedRole, getSelectedRole, clearSelectedRole) that persist user role choice through Internet Identity login redirect."
+  "frontend/src/utils/urlParams.ts": "Utility functions for URL parameter management and session storage, including role selection helpers (setSelectedRole, getSelectedRole, clearSelectedRole) that persist user role choice through Internet Identity login redirect.",
+  "tests/jest.config.ts": "Jest configuration for TypeScript + React Testing Library with JS DOM environment, module path mapping, and coverage settings.",
+  "tests/setupTests.ts": "Global test setup with jest-dom matchers, browser API mocks (matchMedia, IntersectionObserver, ResizeObserver), and console error suppression.",
+  "tests/__tests__/LandingPage.role-login.test.tsx": "Tests for LandingPage role-based login buttons (Venue/Musician/Customer), role selection, login triggering, disabled state during login, and gig search filtering.",
+  "tests/__tests__/App.auth-routing-gating.test.tsx": "Tests for App authentication gating (unauthenticated → LandingPage, authenticated+no profile → ProfileSetup), admin route gating (/admin → AdminDashboard or AccessDeniedScreen), and role-based dashboard routing.",
+  "tests/__tests__/useUsageTracking.behavior.test.tsx": "Tests for useUsageTracking hook behavior including session_start recording once per session, trackPageView and trackAction only when authenticated, and no duplicate session tracking.",
+  "tests/__mocks__/appModules.ts": "Shared mock helpers including stub components for dashboards and AccessDeniedScreen, and fake UserProfile factory functions for testing.",
+  "tests/test-utils/renderWithProviders.tsx": "Custom RTL render helper that wraps components with React Query QueryClientProvider for deterministic testing.",
+  "tests/test-utils/mockInternetIdentity.ts": "Mock factory for useInternetIdentity hook to simulate authentication states (unauthenticated, authenticated, logging-in, initializing) without modifying immutable hook files.",
+  "tests/test-utils/mockQueries.ts": "Mock factories for backend-query hooks (useGetCallerUserProfile, useIsCallerAdmin, useFetchAllGigs, useRecordUsageEvent) to simulate backend data without network/canisters.",
+  "tests/test-utils/mockUrlParams.ts": "Mock helpers for URL parameter utility functions (setSelectedRole, getSelectedRole, clearSelectedRole) to verify role selection behavior deterministically.",
+  "tests/test-utils/mockUI.tsx": "Lightweight mocks for UI-only imports (ThemeProvider, Toaster, toast) that are irrelevant to logic assertions but can complicate tests.",
+  "tests/README.md": "Documentation for running the test suite, what is tested (LandingPage role login, App auth/routing gating, usage tracking), what is mocked (Internet Identity, backend queries, URL params), and coverage areas."
 }

@@ -19,17 +19,22 @@ export default function ProfileSetup() {
   // Get pre-selected role from session storage (set during login)
   const preSelectedRole = getSelectedRole();
   
+  // Type guard to check if role is valid
+  const isValidRole = (role: string | null): role is 'venue' | 'musician' | 'customer' => {
+    return role === 'venue' || role === 'musician' || role === 'customer';
+  };
+  
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
     bio: '',
     location: '',
-    role: (preSelectedRole || 'musician') as 'venue' | 'musician' | 'customer',
+    role: (isValidRole(preSelectedRole) ? preSelectedRole : 'musician') as 'venue' | 'musician' | 'customer',
   });
 
   // Update role if pre-selected role changes
   useEffect(() => {
-    if (preSelectedRole) {
+    if (preSelectedRole && isValidRole(preSelectedRole)) {
       setFormData(prev => ({ ...prev, role: preSelectedRole }));
     }
   }, [preSelectedRole]);

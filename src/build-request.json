@@ -1,58 +1,69 @@
 {
   "kind": "build_request",
-  "title": "Add role selection at login for musician, customer, and venue",
+  "title": "Add complete Jest + React Testing Library /tests folder",
   "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-8",
-      "text": "Add an explicit role selection step to the login experience so a user can choose to continue as \"Venue\", \"Musician\", or \"Customer\" before authenticating, and ensure the selected role is carried into profile creation.",
+      "id": "REQ-10",
+      "text": "Create a complete repository-root `/tests` folder containing a working automated frontend test suite for the existing React app, using Jest + React Testing Library, with test files covering: LandingPage role-based login buttons, App authentication gating, App minimal path-based routing for `/admin` (admin vs non-admin), role-based dashboard rendering (venue/musician/customer), ProfileSetup rendering for authenticated users without a profile, and usage tracking behavior (page_view on mount when authenticated, session_start once per session).",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-user-1"
+          "msg-1"
         ],
         "quotes": [
-          "Give me a login option for musician:consumer:venue"
+          "A complete /tests folderJust"
         ]
       },
       "acceptanceCriteria": [
-        "On the public Landing page, the user can choose one of three options: Venue, Musician, Customer, with clear English labels.",
-        "Choosing a role and then logging in persists the selected role for the current browser session (e.g., via sessionStorage) so it survives the Internet Identity redirect/roundtrip.",
-        "If the authenticated user has no profile yet and is sent to Profile Setup, the role field is pre-selected to the role chosen on the Landing page.",
-        "If no role was selected before login, Profile Setup defaults to the current existing default behavior (musician).",
-        "The change does not require editing any files under the frontend immutable paths list (e.g., do not edit `frontend/src/hooks/useInternetIdentity.ts`)."
+        "A `/tests` directory exists at the repository root and contains all test code (test files + any test utilities/mocks).",
+        "Tests include coverage for: LandingPage role buttons (Venue/Musician/Customer) calling role selection and triggering login; App renders LandingPage when unauthenticated; App renders ProfileSetup when authenticated and userProfile is null; App renders AdminDashboard at `/admin` for admin users and AccessDeniedScreen for non-admin users; App renders correct role dashboard based on `userProfile.role`; usage tracking calls trackPageView on mount when authenticated and does not run when unauthenticated.",
+        "All tests can be executed in a JS DOM environment and do not require a running Internet Computer canister or network connectivity."
       ]
     },
     {
-      "id": "REQ-9",
-      "text": "Update the Landing page call-to-action buttons to provide three distinct \"Continue as\" / \"Join as\" login options (Venue, Musician, Customer) while continuing to use Internet Identity for authentication.",
+      "id": "REQ-11",
+      "text": "Add test harness utilities inside `/tests` to make component tests deterministic: a shared render helper that wraps components with required providers (e.g., React Query provider), plus module mocks for Internet Identity and backend-query hooks so tests can simulate authentication states, admin state, and backend data without editing the immutable hook source files.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-user-1"
+          "msg-1"
         ],
         "quotes": [
-          "Give me a login option for musician:consumer:venue"
+          "A complete /tests folderJust"
         ]
       },
       "acceptanceCriteria": [
-        "Landing page shows three role-specific login buttons (Venue, Musician, Customer).",
-        "Clicking any of the three buttons initiates the existing Internet Identity login flow.",
-        "Buttons show an appropriate disabled/loading state when login is in progress, consistent with the current UI behavior.",
-        "All user-facing text for these buttons is in English."
+        "`/tests` includes reusable helpers (e.g., a `renderWithProviders` utility) that can render `App` and pages without runtime errors.",
+        "Tests mock `useInternetIdentity`, `useGetCallerUserProfile`, `useIsCallerAdmin`, and usage tracking/recording paths so that each authentication/admin scenario can be simulated.",
+        "No changes are required to any files under `frontend/src/hooks/useInternetIdentity.ts`, `frontend/src/hooks/useActor.ts`, or `frontend/src/components/ui` to enable testing."
+      ]
+    },
+    {
+      "id": "REQ-12",
+      "text": "Include a minimal, developer-friendly testing README inside `/tests` that explains how to run the test suite locally and what the suite covers, using English for all user-facing text.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "A complete /tests folderJust"
+        ]
+      },
+      "acceptanceCriteria": [
+        "`/tests/README.md` exists and explains: how to run tests, what is mocked, and which high-level modules are covered (LandingPage, App routing/auth gating, admin gating, dashboards, usage tracking)."
       ]
     }
   ],
   "constraints": [
-    "Backend must remain single-actor; do not introduce additional backend services.",
-    "Do not edit files listed in `frontend.immutablePaths` in SYSTEM_CONTEXT; compose new logic in other files instead.",
-    "Do not introduce a full routing framework; keep the existing minimal path-based rendering approach."
+    "Do not edit any frontend files under the immutable paths listed by the platform (including `frontend/src/hooks/useInternetIdentity.ts`, `frontend/src/hooks/useActor.ts`, `frontend/src/main.tsx`, and anything under `frontend/src/components/ui`).",
+    "Keep backend unchanged for this request; the `/tests` suite must mock backend interactions rather than requiring new Motoko endpoints."
   ],
   "nonGoals": [
-    "Implementing phone number login or OTP flows.",
-    "Allowing a single Internet Identity principal to maintain multiple simultaneous roles/accounts.",
-    "Adding third-party authentication providers beyond Internet Identity.",
-    "Changing the existing admin (/admin) access control behavior."
+    "Investigating or fixing the reported slow initial load performance (can be handled in a separate request).",
+    "Adding end-to-end (E2E) browser automation (e.g., Playwright/Cypress).",
+    "Adding backend (Motoko) unit tests."
   ],
   "imageRequirements": {
     "required": [],

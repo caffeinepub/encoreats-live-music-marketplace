@@ -1,12 +1,13 @@
 # Specification
 
 ## Summary
-**Goal:** Let users explicitly choose to continue as Venue, Musician, or Customer at login, and carry that selection into profile setup.
+**Goal:** Add a complete repository-root `/tests` folder containing a working Jest + React Testing Library frontend test suite for the existing React app.
 
 **Planned changes:**
-- Update the public Landing page to show three role-specific “Continue as” / “Join as” login buttons: Venue, Musician, Customer.
-- Persist the selected role for the current browser session (e.g., sessionStorage) so it survives the Internet Identity login redirect/roundtrip.
-- On Profile Setup for users without an existing profile, pre-select the role field based on the Landing-page selection.
-- Preserve existing behavior when no role was selected before login (default remains Musician).
+- Create a root-level `/tests` directory containing all test files plus shared test utilities/mocks.
+- Add deterministic test harness utilities (e.g., `renderWithProviders`) to wrap components with required providers and avoid runtime errors in tests.
+- Mock authentication/admin/data hooks and usage tracking modules so tests can simulate states without network/canister dependencies and without editing immutable frontend hook/UI files.
+- Implement tests covering: LandingPage role-based login buttons; App unauthenticated gating to LandingPage; ProfileSetup rendering when authenticated but `userProfile` is null; `/admin` route gating (AdminDashboard vs AccessDeniedScreen); role-based dashboard rendering (venue/musician/customer); usage tracking behavior (`page_view` on mount when authenticated; `session_start` once per session).
+- Add `/tests/README.md` describing how to run tests locally, what is mocked, and which modules/behaviors are covered.
 
-**User-visible outcome:** On the Landing page, users can pick Venue, Musician, or Customer before logging in; after Internet Identity login, new users see that role pre-selected during profile creation (or default to Musician if they didn’t choose).
+**User-visible outcome:** Developers can run a local, offline frontend test suite that validates authentication gating, routing/admin access, role-based dashboards, and usage tracking behavior.

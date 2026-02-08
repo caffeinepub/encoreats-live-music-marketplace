@@ -1,14 +1,15 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 5,
+  "projectStateVersion": 7,
   "summary": "Encoreats app includes built-in usage analytics and a pro admin dashboard (/admin) plus role-based access for consumer, musician, and venue, and now needs a login flow option to select the user role (consumer/musician/venue).",
   "architectural_notes": [
     "Implement in-app analytics without third-party services; track/store usage metrics in backend and expose them to a password-gated /admin dashboard."
   ],
   "known_issues": [
-    "Automated build/implementation of the requested pro admin dashboard failed multiple times; may need simplification or re-scoping to succeed."
+    "Automated build/implementation of the requested pro admin dashboard failed multiple times; may need simplification or re-scoping to succeed.",
+    "App is very slow to load (performance issue reported by user); investigate initial load time and rendering/network bottlenecks."
   ],
-  "isFixRequest": false,
+  "isFixRequest": true,
   "existing_features": [
     {
       "id": "feature-add-frontend-tracking-that-automatically-records-usage-events-to-the-backend-record-a-session-start-when-an-authenticated-user-enters-the-app-and-record-page-view-or-equivalent-for-the-currently-rendered-screen-ensure-the-tracking-calls-do-not-block-ui-rendering-and-gracefully-no-op-when-the-actor-identity-is-unavailable",
@@ -100,6 +101,36 @@
       "id": "AR-6",
       "summary": "Add a login flow option to choose role (consumer, musician, venue) during/after authentication so users can enter the correct dashboard.",
       "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-7",
+      "summary": "Add a complete frontend automated testing suite (/tests folder) for the app using Jest + React Testing Library, covering role-based login, routing, dashboards, and analytics tracking hooks.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-8",
+      "summary": "Create a complete repository-root `/tests` folder containing a working automated frontend test suite for the existing React app, using Jest + React Testing Library, with test files covering: LandingPage role-based login buttons, App authentication gating, App minimal path-based routing for `/admin` (admin vs non-admin), role-based dashboard rendering (venue/musician/customer), ProfileSetup rendering for authenticated users without a profile, and usage tracking behavior (page_view on mount when authenticated, session_start once per session).",
+      "reqIds": [
+        "REQ-10"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-9",
+      "summary": "Add test harness utilities inside `/tests` to make component tests deterministic: a shared render helper that wraps components with required providers (e.g., React Query provider), plus module mocks for Internet Identity and backend-query hooks so tests can simulate authentication states, admin state, and backend data without editing the immutable hook source files.",
+      "reqIds": [
+        "REQ-11"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-10",
+      "summary": "Include a minimal, developer-friendly testing README inside `/tests` that explains how to run the test suite locally and what the suite covers, using English for all user-facing text.",
+      "reqIds": [
+        "REQ-12"
+      ],
       "status": "pending"
     }
   ],

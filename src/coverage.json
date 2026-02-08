@@ -1,40 +1,50 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-08T00:00:03.414Z",
+  "generatedAt": "2026-02-08T00:28:38.998Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 2,
-    "implemented": 2,
+    "total": 3,
+    "implemented": 0,
     "items": [
       {
-        "id": "REQ-8",
-        "summary": "Add an explicit role selection step to the login experience so a user can choose to continue as \"Venue\", \"Musician\", or \"Customer\" before authenticating, and ensure the selected role is carried into profile creation.",
-        "status": "implemented",
+        "id": "REQ-10",
+        "summary": "Create a complete repository-root `/tests` folder containing a working automated frontend test suite for the existing React app, using Jest + React Testing Library, with test files covering: LandingPage role-based login buttons, App authentication gating, App minimal path-based routing for `/admin` (admin vs non-admin), role-based dashboard rendering (venue/musician/customer), ProfileSetup rendering for authenticated users without a profile, and usage tracking behavior (page_view on mount when authenticated, session_start once per session).",
+        "status": "missing",
         "plannedFiles": [
-          "frontend/src/utils/urlParams.ts",
-          "frontend/src/components/ProfileSetup.tsx",
-          "frontend/src/components/Header.tsx"
+          "frontend/../tests/jest.config.ts",
+          "frontend/../tests/setupTests.ts",
+          "frontend/../tests/__tests__/LandingPage.role-login.test.tsx",
+          "frontend/../tests/__tests__/App.auth-routing-gating.test.tsx",
+          "frontend/../tests/__tests__/useUsageTracking.behavior.test.tsx",
+          "frontend/../tests/__mocks__/appModules.ts"
         ],
-        "matchedFiles": [
-          "frontend/src/utils/urlParams.ts",
-          "frontend/src/components/ProfileSetup.tsx",
-          "frontend/src/components/Header.tsx"
-        ]
+        "matchedFiles": []
       },
       {
-        "id": "REQ-9",
-        "summary": "Update the Landing page call-to-action buttons to provide three distinct \"Continue as\" / \"Join as\" login options (Venue, Musician, Customer) while continuing to use Internet Identity for authentication.",
-        "status": "implemented",
+        "id": "REQ-11",
+        "summary": "Add test harness utilities inside `/tests` to make component tests deterministic: a shared render helper that wraps components with required providers (e.g., React Query provider), plus module mocks for Internet Identity and backend-query hooks so tests can simulate authentication states, admin state, and backend data without editing the immutable hook source files.",
+        "status": "missing",
         "plannedFiles": [
-          "frontend/src/pages/LandingPage.tsx"
+          "frontend/../tests/test-utils/renderWithProviders.tsx",
+          "frontend/../tests/test-utils/mockInternetIdentity.ts",
+          "frontend/../tests/test-utils/mockQueries.ts",
+          "frontend/../tests/test-utils/mockUrlParams.ts",
+          "frontend/../tests/test-utils/mockUI.tsx"
         ],
-        "matchedFiles": [
-          "frontend/src/pages/LandingPage.tsx"
-        ]
+        "matchedFiles": []
+      },
+      {
+        "id": "REQ-12",
+        "summary": "Include a minimal, developer-friendly testing README inside `/tests` that explains how to run the test suite locally and what the suite covers, using English for all user-facing text.",
+        "status": "missing",
+        "plannedFiles": [
+          "frontend/../tests/README.md"
+        ],
+        "matchedFiles": []
       }
     ]
   },
@@ -43,9 +53,7 @@
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/src/components/Header.tsx",
     "frontend/src/components/ProfileSetup.tsx",
-    "frontend/src/pages/LandingPage.tsx",
     "frontend/src/utils/urlParams.ts",
     "project_state.json",
     "scratch/component-selection.json",
