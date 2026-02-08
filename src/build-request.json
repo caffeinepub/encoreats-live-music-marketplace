@@ -1,72 +1,110 @@
 {
   "kind": "build_request",
-  "title": "Add complete Jest + React Testing Library /tests folder",
+  "title": "Cyber‑Noir Landing Page Hero + nightlife brand assets",
   "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-10",
-      "text": "Create a complete repository-root `/tests` folder containing a working automated frontend test suite for the existing React app, using Jest + React Testing Library, with test files covering: LandingPage role-based login buttons, App authentication gating, App minimal path-based routing for `/admin` (admin vs non-admin), role-based dashboard rendering (venue/musician/customer), ProfileSetup rendering for authenticated users without a profile, and usage tracking behavior (page_view on mount when authenticated, session_start once per session).",
+      "id": "REQ-13",
+      "text": "Redesign the Landing Page hero section to a Dark Mode “Cyber‑Noir Luxury” look using a full-bleed background image of a live jazz band with a 60% black overlay so white hero text remains legible, and include a primary neon purple-to-pink gradient CTA button labeled “Book Now”.",
       "target": "frontend",
       "source": {
         "messageIds": [
           "msg-1"
         ],
         "quotes": [
-          "A complete /tests folderJust"
+          "I want to start with the Landing Page. Please generate a Hero Section using the 'Cyber-Noir' palette with a Neon Purple 'Book Now' button and a background image of a live jazz band.",
+          "Key Change: Move from a white corporate look to a \"Dark Mode Immersive\" experience.",
+          "Effect: Overlay a 60% black opacity layer so white text pops on top."
         ]
       },
       "acceptanceCriteria": [
-        "A `/tests` directory exists at the repository root and contains all test code (test files + any test utilities/mocks).",
-        "Tests include coverage for: LandingPage role buttons (Venue/Musician/Customer) calling role selection and triggering login; App renders LandingPage when unauthenticated; App renders ProfileSetup when authenticated and userProfile is null; App renders AdminDashboard at `/admin` for admin users and AccessDeniedScreen for non-admin users; App renders correct role dashboard based on `userProfile.role`; usage tracking calls trackPageView on mount when authenticated and does not run when unauthenticated.",
-        "All tests can be executed in a JS DOM environment and do not require a running Internet Computer canister or network connectivity."
+        "Landing page hero uses a jazz-band background image rendered from a static asset under frontend/public/assets/generated/.",
+        "A dark overlay approximating 60% black opacity is visible on top of the hero background image.",
+        "Hero headline text remains present and readable in English on dark background.",
+        "Primary CTA button text reads exactly “Book Now” and uses a purple→pink neon gradient styling (Tailwind gradient classes acceptable).",
+        "Hero section renders correctly on mobile and desktop breakpoints without horizontal overflow."
       ]
     },
     {
-      "id": "REQ-11",
-      "text": "Add test harness utilities inside `/tests` to make component tests deterministic: a shared render helper that wraps components with required providers (e.g., React Query provider), plus module mocks for Internet Identity and backend-query hooks so tests can simulate authentication states, admin state, and backend data without editing the immutable hook source files.",
+      "id": "REQ-14",
+      "text": "Add required nightlife brand image assets as static files under frontend/public/assets/generated and wire them into the UI where applicable on the Landing Page (header branding + favicon) without routing images through the backend.",
       "target": "frontend",
       "source": {
         "messageIds": [
           "msg-1"
         ],
         "quotes": [
-          "A complete /tests folderJust"
+          "Logo (The Beacon): ... Files: logo_full_dark_mode.png, favicon_neon.png.",
+          "You need these specific assets to sell the \"premium\" nightlife feel."
         ]
       },
       "acceptanceCriteria": [
-        "`/tests` includes reusable helpers (e.g., a `renderWithProviders` utility) that can render `App` and pages without runtime errors.",
-        "Tests mock `useInternetIdentity`, `useGetCallerUserProfile`, `useIsCallerAdmin`, and usage tracking/recording paths so that each authentication/admin scenario can be simulated.",
-        "No changes are required to any files under `frontend/src/hooks/useInternetIdentity.ts`, `frontend/src/hooks/useActor.ts`, or `frontend/src/components/ui` to enable testing."
+        "New image assets are added under frontend/public/assets/generated using the exact filenames requested.",
+        "Landing page header uses the new logo image asset instead of the current icon-only branding (keep text allowed, but logo must be visible).",
+        "frontend/index.html (or equivalent supported mechanism) references the new favicon file so the browser shows the neon favicon."
       ]
     },
     {
-      "id": "REQ-12",
-      "text": "Include a minimal, developer-friendly testing README inside `/tests` that explains how to run the test suite locally and what the suite covers, using English for all user-facing text.",
+      "id": "REQ-15",
+      "text": "Implement Cyber‑Noir UI styling tokens on the Landing Page hero (deep navy/charcoal background, white headings, slate body text, neon purple gradient primary action, subtle glow) consistent with the user-provided design system, without switching to pure black (#000000).",
       "target": "frontend",
       "source": {
         "messageIds": [
           "msg-1"
         ],
         "quotes": [
-          "A complete /tests folderJust"
+          "Theme: \"Cyber-Noir Luxury\" (Dark Mode Only).",
+          "Background: Deep Navy (#0f172a) or Charcoal (#111827) — Never pure black (#000000).",
+          "Primary Action: Neon Purple Gradient (bg-gradient-to-r from-purple-600 to-pink-600).",
+          "Text: White for headings; Slate-400 for body text.",
+          "Glows: Add subtle drop-shadow-glow to primary buttons."
         ]
       },
       "acceptanceCriteria": [
-        "`/tests/README.md` exists and explains: how to run tests, what is mocked, and which high-level modules are covered (LandingPage, App routing/auth gating, admin gating, dashboards, usage tracking)."
+        "Landing page hero background uses a dark navy/charcoal feel (not pure black).",
+        "Heading text is white and body text uses a slate-muted color in dark mode.",
+        "Primary “Book Now” button uses a purple→pink gradient and has a subtle glow (e.g., via drop-shadow/ring/shadow utilities).",
+        "No changes are made to immutable hook/component source paths listed in SYSTEM_CONTEXT."
       ]
     }
   ],
   "constraints": [
-    "Do not edit any frontend files under the immutable paths listed by the platform (including `frontend/src/hooks/useInternetIdentity.ts`, `frontend/src/hooks/useActor.ts`, `frontend/src/main.tsx`, and anything under `frontend/src/components/ui`).",
-    "Keep backend unchanged for this request; the `/tests` suite must mock backend interactions rather than requiring new Motoko endpoints."
+    "Do not edit files under frontend immutablePaths (must compose existing UI components rather than modifying them).",
+    "All user-facing text in the updated hero must be in English.",
+    "Store and serve images as static assets from the frontend (frontend/public/assets/generated); do not route image delivery through the backend.",
+    "Keep the app Dark Mode behavior (ThemeProvider defaultTheme=\"dark\") intact; do not add a password/forgot-password flow (Internet Identity has no passwords)."
   ],
   "nonGoals": [
-    "Investigating or fixing the reported slow initial load performance (can be handled in a separate request).",
-    "Adding end-to-end (E2E) browser automation (e.g., Playwright/Cypress).",
-    "Adding backend (Motoko) unit tests."
+    "Do not implement the “Live Gigs Tonight” ticker or “Trending Artists” carousel in this build (Landing Page hero only).",
+    "Do not redesign the /admin dashboard to glassmorphism or add new admin widgets (“Live Pulse”, “Escrow Vault”) in this build.",
+    "Do not redesign the Musician “Gig Wallet” states (locked vs available) in this build.",
+    "Do not implement the optional 10-second looping hero video in this build (use the still image background for now).",
+    "Do not add third-party icon packs beyond the existing Lucide React usage; only adjust styling/glow states where needed later."
   ],
   "imageRequirements": {
-    "required": [],
+    "required": [
+      "Neon gradient logo on dark background, stylized “E” or sound wave combined with a location pin (logo_full_dark_mode.png.dim_1024x1024.png)",
+      "Neon favicon mark matching the logo style, simplified for small sizes (favicon_neon.png.dim_256x256.png)",
+      "High-resolution dark-toned photo of a live jazz band performing, warm venue lighting, crowd energy (hero_jazz_band_bg.dim_2400x1350.jpg)",
+      "Dark sleek musician avatar silhouette with headphones or guitar (placeholder_musician_avatar.dim_512x512.png)",
+      "Generic venue cover image: clinking glasses or stage lights, dark nightlife feel (placeholder_venue_cover.dim_1600x900.jpg)",
+      "Wallet icon with neon/glow styling suitable for dark UI (icon_wallet_glow.dim_256x256.png)",
+      "Calendar icon with neon/glow styling suitable for dark UI (icon_calendar_glow.dim_256x256.png)"
+    ],
     "edits": []
+  },
+  "userProfileUpdate": {
+    "goalsToAdd": [
+      "Refresh the app’s look to a Cyber‑Noir Luxury dark-mode nightlife aesthetic, starting with the Landing Page hero."
+    ],
+    "goalsToRemove": [],
+    "preferencesToAdd": [
+      "Dark Mode Only visual direction for marketing/landing surfaces; neon purple→pink gradients and subtle glow effects."
+    ],
+    "preferencesToRemove": [],
+    "miscToAdd": [],
+    "miscToRemove": [],
+    "fieldsToSet": {},
+    "fieldsToDelete": []
   }
 }

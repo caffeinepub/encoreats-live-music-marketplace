@@ -1,58 +1,50 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-02-08T00:28:38.996Z",
-  "summary": "The diff does not add a repository-root /tests folder, Jest/RTL test suite, test utilities/mocks, or a /tests README. Instead, it modifies existing frontend source files (ProfileSetup and urlParams) to support role pre-selection via session storage/URL params, which is outside the BuildRequest scope (tests-only).",
+  "generatedAt": "2026-02-08T00:59:49.797Z",
+  "summary": "Diff updates global dark-mode styling tokens (Cyber‑Noir palette + glow utilities), modifies LandingPage to use new static hero background with a 60% black overlay and to show a logo in the header, and updates index.html to point to a new favicon path. However, the required image assets are not added in the diff, and there are unrequested additions (react-icons usage and URL/session param utilities).",
   "missing_requirements": [
     {
-      "id": "REQ-10",
-      "requirement": "Create a complete repository-root `/tests` folder containing a working Jest + React Testing Library frontend test suite covering LandingPage role login buttons, App auth gating, `/admin` admin vs non-admin gating, role dashboards, ProfileSetup when no profile, and usage tracking behaviors.",
-      "reason": "No `/tests` directory or any test files/config are added in the diff (\"Added: 0\"). The only changes shown are modifications to existing frontend source files.",
+      "id": "REQ-13",
+      "requirement": "Primary CTA button text reads exactly “Book Now” and uses a purple→pink neon gradient styling; hero renders correctly on mobile/desktop without horizontal overflow.",
+      "reason": "The LandingPage.tsx diff is truncated before the primary CTA is shown; the provided snippet only shows a header “Get Started” button, and does not provide evidence of a hero CTA labeled exactly “Book Now” nor any evidence of overflow-safe responsive layout.",
       "evidence": [
-        "File diff summary: Added: 0, Modified: 4, Removed: 0",
-        "frontend/src/components/ProfileSetup.tsx",
-        "frontend/src/utils/urlParams.ts",
-        "frontend-file-summaries.txt"
+        "frontend/src/pages/LandingPage.tsx"
       ]
     },
     {
-      "id": "REQ-11",
-      "requirement": "Add deterministic test harness utilities inside `/tests` (e.g., `renderWithProviders`) and module mocks for `useInternetIdentity`, `useGetCallerUserProfile`, `useIsCallerAdmin`, and usage tracking so scenarios can be simulated without editing immutable hook/UI files.",
-      "reason": "No `/tests` utilities or mocks are added; no evidence of render helpers or Jest module mocks in the diff (\"Added: 0\").",
+      "id": "REQ-14",
+      "requirement": "Add required nightlife brand image assets as static files under frontend/public/assets/generated using the exact filenames requested.",
+      "reason": "No files were added in the diff (“ADDED FILES: none”), so the requested static image assets cannot be verified as present under frontend/public/assets/generated.",
       "evidence": [
-        "File diff summary: Added: 0, Modified: 4, Removed: 0"
-      ]
-    },
-    {
-      "id": "REQ-12",
-      "requirement": "Include a minimal developer-friendly testing README inside `/tests` explaining how to run tests, what is mocked, and what modules are covered.",
-      "reason": "No `/tests/README.md` is added (\"Added: 0\").",
-      "evidence": [
-        "File diff summary: Added: 0, Modified: 4, Removed: 0"
+        "<file-diff>: ADDED FILES none"
       ]
     }
   ],
   "hallucinated_features": [
     {
-      "description": "Modified `ProfileSetup` to pre-select the user role from session storage/URL params and clear it after profile creation.",
-      "reason": "The BuildRequest asks only to add a Jest + React Testing Library `/tests` folder and related test utilities/README; it does not request changes to application components/role-selection behavior.",
+      "description": "Introduced react-icons (SiFacebook/SiX/SiInstagram) despite the constraint to not add third-party icon packs beyond existing Lucide React usage.",
+      "reason": "BuildRequest explicitly forbids adding third-party icon packs beyond Lucide React; the diff shows new imports from react-icons/si.",
       "evidence": [
-        "frontend/src/components/ProfileSetup.tsx"
+        "frontend/src/pages/LandingPage.tsx"
       ]
     },
     {
-      "description": "Expanded/added URL parameter + sessionStorage persistence utilities (e.g., get/store/clear session parameters, persisted URL parameter behavior, hash query parsing).",
-      "reason": "The BuildRequest is specifically about adding a `/tests` suite and test documentation; it does not request new URL/session parameter utilities or behavioral changes.",
+      "description": "Expanded/added URL parameter + sessionStorage utilities (getPersistedUrlParameter, storeSessionParameter, etc.) unrelated to the landing hero/brand assets requirements.",
+      "reason": "BuildRequest scope is landing page hero redesign + wiring static brand assets (logo + favicon). The diff includes substantial changes to urlParams utilities not requested in REQ-13/14/15.",
       "evidence": [
         "frontend/src/utils/urlParams.ts"
       ]
     }
   ],
-  "confidence": 0.92,
+  "confidence": 0.72,
   "changed_files": [
     "frontend-file-summaries.txt",
-    "frontend/src/components/ProfileSetup.tsx",
+    "frontend/index.html",
+    "frontend/src/index.css",
+    "frontend/src/pages/LandingPage.tsx",
     "frontend/src/utils/urlParams.ts",
+    "frontend/tailwind.config.js",
     "project_state.json"
   ]
 }

@@ -40,37 +40,43 @@
     }
 
     .dark {
-        --background: 0.12 0 0;
+        /* Cyber-Noir: Deep Navy/Charcoal backgrounds */
+        --background: 0.15 0.02 250;
         --foreground: 0.98 0 0;
-        --card: 0.16 0 0;
+        --card: 0.18 0.02 250;
         --card-foreground: 0.98 0 0;
-        --popover: 0.18 0 0;
+        --popover: 0.20 0.02 250;
         --popover-foreground: 0.98 0 0;
         --primary: 0.92 0 0;
         --primary-foreground: 0.12 0 0;
-        --secondary: 0.22 0 0;
+        --secondary: 0.24 0.02 250;
         --secondary-foreground: 0.98 0 0;
-        --muted: 0.22 0 0;
-        --muted-foreground: 0.65 0 0;
-        --accent: 0.26 0 0;
+        --muted: 0.24 0.02 250;
+        /* Slate-400 for body text */
+        --muted-foreground: 0.65 0.02 250;
+        --accent: 0.28 0.02 250;
         --accent-foreground: 0.98 0 0;
         --destructive: 0.60 0.25 25;
         --destructive-foreground: 0.98 0 0;
-        --border: 0.98 0 0 / 12%;
+        --border: 0.98 0 0 / 10%;
         --input: 0.98 0 0 / 15%;
+        /* Neon Purple ring */
         --ring: 0.65 0.25 290;
+        /* Neon Purple gradient primary */
         --chart-1: 0.65 0.25 290;
-        --chart-2: 0.70 0.20 200;
+        /* Electric Teal for success/money */
+        --chart-2: 0.75 0.18 180;
         --chart-3: 0.60 0.22 330;
-        --chart-4: 0.68 0.24 310;
-        --chart-5: 0.75 0.18 180;
-        --sidebar: 0.16 0 0;
+        /* Pink for gradient end */
+        --chart-4: 0.68 0.24 320;
+        --chart-5: 0.70 0.20 200;
+        --sidebar: 0.18 0.02 250;
         --sidebar-foreground: 0.98 0 0;
         --sidebar-primary: 0.65 0.25 290;
         --sidebar-primary-foreground: 0.98 0 0;
-        --sidebar-accent: 0.22 0 0;
+        --sidebar-accent: 0.24 0.02 250;
         --sidebar-accent-foreground: 0.98 0 0;
-        --sidebar-border: 0.98 0 0 / 12%;
+        --sidebar-border: 0.98 0 0 / 10%;
         --sidebar-ring: 0.65 0.25 290;
     }
 
@@ -79,10 +85,23 @@
     }
     body {
         @apply bg-background text-foreground;
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+        font-family: 'Inter', 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
     }
     h1, h2, h3, h4, h5, h6 {
         font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
         font-weight: 700;
+        letter-spacing: -0.02em;
+    }
+}
+
+@layer utilities {
+    .glow-purple {
+        box-shadow: 0 0 20px rgba(168, 85, 247, 0.4), 0 0 40px rgba(168, 85, 247, 0.2);
+    }
+    .glow-pink {
+        box-shadow: 0 0 20px rgba(236, 72, 153, 0.4), 0 0 40px rgba(236, 72, 153, 0.2);
+    }
+    .glow-teal {
+        box-shadow: 0 0 20px rgba(45, 212, 191, 0.4), 0 0 40px rgba(45, 212, 191, 0.2);
     }
 }

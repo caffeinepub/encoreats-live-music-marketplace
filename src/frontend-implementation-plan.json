@@ -1,96 +1,96 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Repository-root Jest + React Testing Library test suite in /tests",
+  "title": "Cyber‑Noir Landing Page Hero + nightlife brand assets",
   "requirements": [
     {
-      "id": "REQ-10",
-      "summary": "Add Jest + React Testing Library tests covering LandingPage role login, App auth/profile/admin gating, role dashboards, and usage tracking behaviors without requiring network/canisters.",
+      "id": "REQ-13",
+      "summary": "Redesign Landing Page hero to full-bleed jazz-band background with ~60% dark overlay and a neon gradient “Book Now” CTA.",
       "acceptanceCriteria": [
-        "A `/tests` directory exists at the repository root and contains all test code (test files + any test utilities/mocks).",
-        "Tests include coverage for: LandingPage role buttons (Venue/Musician/Customer) calling role selection and triggering login; App renders LandingPage when unauthenticated; App renders ProfileSetup when authenticated and userProfile is null; App renders AdminDashboard at `/admin` for admin users and AccessDeniedScreen for non-admin users; App renders correct role dashboard based on `userProfile.role`; usage tracking calls trackPageView on mount when authenticated and does not run when unauthenticated.",
-        "All tests can be executed in a JS DOM environment and do not require a running Internet Computer canister or network connectivity."
+        "Landing page hero uses a jazz-band background image rendered from a static asset under frontend/public/assets/generated/.",
+        "A dark overlay approximating 60% black opacity is visible on top of the hero background image.",
+        "Hero headline text remains present and readable in English on dark background.",
+        "Primary CTA button text reads exactly “Book Now” and uses a purple→pink neon gradient styling (Tailwind gradient classes acceptable).",
+        "Hero section renders correctly on mobile and desktop breakpoints without horizontal overflow."
       ],
       "file_operations": [
         {
-          "path": "frontend/../tests/jest.config.ts",
+          "path": "frontend/public/assets/generated/hero_jazz_band_bg.dim_2400x1350.jpg",
           "operation": "create",
-          "description": "Create Jest configuration for a JS DOM environment with TypeScript support, React Testing Library setup, and module path mapping so tests can import existing app modules (e.g., '@/...' alias) while staying fully offline/deterministic."
+          "description": "Add the required hero background image as a static frontend asset (no backend involvement)."
         },
         {
-          "path": "frontend/../tests/setupTests.ts",
-          "operation": "create",
-          "description": "Add global Jest test setup (e.g., jest-dom matchers, stable test environment defaults, and safe browser API shims used by the app)."
-        },
-        {
-          "path": "frontend/../tests/__tests__/LandingPage.role-login.test.tsx",
-          "operation": "create",
-          "description": "Add RTL tests for LandingPage: verify the role-based buttons (Venue/Musician/Customer) call role selection (via urlParams) and trigger Internet Identity login (via mocked useInternetIdentity), including disabled state when logging in."
-        },
-        {
-          "path": "frontend/../tests/__tests__/App.auth-routing-gating.test.tsx",
-          "operation": "create",
-          "description": "Add RTL tests for App authentication gating and minimal path-based routing: unauthenticated renders LandingPage; authenticated+no profile renders ProfileSetup; `/admin` renders AdminDashboard for admins and AccessDeniedScreen for non-admins; role-based dashboard rendering based on `userProfile.role`. Use module mocks for hooks/pages to keep tests fast and deterministic."
-        },
-        {
-          "path": "frontend/../tests/__tests__/useUsageTracking.behavior.test.tsx",
-          "operation": "create",
-          "description": "Add hook-level tests validating usage tracking behavior: `session_start` is recorded once per session when authenticated; `trackPageView` records `page_view` when authenticated and does nothing when unauthenticated. Mock useRecordUsageEvent and useInternetIdentity so no backend calls occur."
-        },
-        {
-          "path": "frontend/../tests/__mocks__/appModules.ts",
-          "operation": "create",
-          "description": "Create shared mock helpers/fixtures for common app module mocks (e.g., simple stub components for dashboards and AccessDeniedScreen, and stable fake UserProfile objects) to reduce duplication across tests."
+          "path": "frontend/src/pages/LandingPage.tsx",
+          "operation": "modify",
+          "description": "Replace the current hero section with a full-bleed background using frontend/public/assets/generated/hero_jazz_band_bg.dim_2400x1350.jpg, add an overlay layer approximating 60% black opacity, ensure English hero text remains readable, and implement a primary gradient CTA button labeled exactly “Book Now” with responsive layout to avoid horizontal overflow."
         }
       ]
     },
     {
-      "id": "REQ-11",
-      "summary": "Provide deterministic test harness utilities in /tests including render helper with providers and module mocks for auth, backend-query hooks, and usage tracking without modifying immutable app source files.",
+      "id": "REQ-14",
+      "summary": "Add nightlife brand assets under frontend/public/assets/generated and wire logo into Landing Page header plus favicon into HTML.",
       "acceptanceCriteria": [
-        "`/tests` includes reusable helpers (e.g., a `renderWithProviders` utility) that can render `App` and pages without runtime errors.",
-        "Tests mock `useInternetIdentity`, `useGetCallerUserProfile`, `useIsCallerAdmin`, and usage tracking/recording paths so that each authentication/admin scenario can be simulated.",
-        "No changes are required to any files under `frontend/src/hooks/useInternetIdentity.ts`, `frontend/src/hooks/useActor.ts`, or `frontend/src/components/ui` to enable testing."
+        "New image assets are added under frontend/public/assets/generated using the exact filenames requested.",
+        "Landing page header uses the new logo image asset instead of the current icon-only branding (keep text allowed, but logo must be visible).",
+        "frontend/index.html (or equivalent supported mechanism) references the new favicon file so the browser shows the neon favicon."
       ],
       "file_operations": [
         {
-          "path": "frontend/../tests/test-utils/renderWithProviders.tsx",
+          "path": "frontend/public/assets/generated/logo_full_dark_mode.png.dim_1024x1024.png",
           "operation": "create",
-          "description": "Create a shared RTL render helper that wraps UI under required providers (at minimum React Query QueryClientProvider with a deterministic client configuration) so App/pages render reliably in tests."
+          "description": "Add the required dark-mode brand logo as a static frontend asset (exact filename)."
         },
         {
-          "path": "frontend/../tests/test-utils/mockInternetIdentity.ts",
+          "path": "frontend/public/assets/generated/favicon_neon.png.dim_256x256.png",
           "operation": "create",
-          "description": "Add a reusable Jest mock factory for `useInternetIdentity` to simulate authentication states (unauthenticated, authenticated, initializing, logging-in) and to assert login calls from LandingPage without touching immutable hook files."
+          "description": "Add the required neon favicon mark as a static frontend asset (exact filename)."
         },
         {
-          "path": "frontend/../tests/test-utils/mockQueries.ts",
+          "path": "frontend/public/assets/generated/placeholder_musician_avatar.dim_512x512.png",
           "operation": "create",
-          "description": "Add reusable mocks for backend-query hooks used by App and LandingPage (including `useGetCallerUserProfile`, `useIsCallerAdmin`, `useFetchAllGigs`, and `useRecordUsageEvent`) so tests can simulate admin state and backend data without network/canisters."
+          "description": "Add the required placeholder musician avatar as a static frontend asset."
         },
         {
-          "path": "frontend/../tests/test-utils/mockUrlParams.ts",
+          "path": "frontend/public/assets/generated/placeholder_venue_cover.dim_1600x900.jpg",
           "operation": "create",
-          "description": "Add reusable mock helpers for `frontend/src/utils/urlParams` functions (e.g., `setSelectedRole`, `getSelectedRole`, `clearSelectedRole`) to verify role selection behavior deterministically."
+          "description": "Add the required placeholder venue cover image as a static frontend asset."
         },
         {
-          "path": "frontend/../tests/test-utils/mockUI.tsx",
+          "path": "frontend/public/assets/generated/icon_wallet_glow.dim_256x256.png",
           "operation": "create",
-          "description": "Add lightweight mocks/stubs for UI-only imports that are irrelevant to logic assertions but can complicate tests (e.g., ThemeProvider, sonner Toaster) while respecting the constraint to not modify any files under `frontend/src/components/ui`."
+          "description": "Add the required wallet glow icon as a static frontend asset."
+        },
+        {
+          "path": "frontend/public/assets/generated/icon_calendar_glow.dim_256x256.png",
+          "operation": "create",
+          "description": "Add the required calendar glow icon as a static frontend asset."
+        },
+        {
+          "path": "frontend/src/pages/LandingPage.tsx",
+          "operation": "modify",
+          "description": "Update the Landing Page header branding to display the new logo image from frontend/public/assets/generated/logo_full_dark_mode.png.dim_1024x1024.png (logo must be visible) while keeping layout responsive and consistent with dark mode."
+        },
+        {
+          "path": "frontend/index.html",
+          "operation": "modify",
+          "description": "Reference the new favicon file frontend/public/assets/generated/favicon_neon.png.dim_256x256.png via a supported favicon link tag in the document head so browsers display the neon favicon."
         }
       ]
     },
     {
-      "id": "REQ-12",
-      "summary": "Add a developer-friendly /tests README describing how to run the suite, what is mocked, and what modules are covered.",
+      "id": "REQ-15",
+      "summary": "Apply Cyber‑Noir styling tokens to the Landing Page hero (navy/charcoal, white headings, slate body, neon gradient action, subtle glow) while avoiding pure black backgrounds.",
       "acceptanceCriteria": [
-        "`/tests/README.md` exists and explains: how to run tests, what is mocked, and which high-level modules are covered (LandingPage, App routing/auth gating, admin gating, dashboards, usage tracking)."
+        "Landing page hero background uses a dark navy/charcoal feel (not pure black).",
+        "Heading text is white and body text uses a slate-muted color in dark mode.",
+        "Primary “Book Now” button uses a purple→pink gradient and has a subtle glow (e.g., via drop-shadow/ring/shadow utilities).",
+        "No changes are made to immutable hook/component source paths listed in SYSTEM_CONTEXT."
       ],
       "file_operations": [
         {
-          "path": "frontend/../tests/README.md",
-          "operation": "create",
-          "description": "Document local test execution instructions (Jest + RTL), what is mocked (Internet Identity, backend-query hooks, usage tracking recorder), and coverage areas (LandingPage role login, App auth/profile gating, `/admin` gating, role dashboards, usage tracking)."
+          "path": "frontend/src/pages/LandingPage.tsx",
+          "operation": "modify",
+          "description": "Adjust hero typography and colors to match Cyber‑Noir tokens (white headings, slate-muted body), ensure the hero background reads as deep navy/charcoal (not #000000), and add a subtle glow to the “Book Now” gradient CTA (e.g., using existing Tailwind shadow utilities such as shadow-glow) without touching any immutable paths."
         }
       ]
     }

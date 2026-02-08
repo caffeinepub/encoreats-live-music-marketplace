@@ -1,15 +1,17 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 7,
-  "summary": "Encoreats app includes built-in usage analytics and a pro admin dashboard (/admin) plus role-based access for consumer, musician, and venue, and now needs a login flow option to select the user role (consumer/musician/venue).",
+  "projectStateVersion": 9,
+  "summary": "Encoreats app includes built-in usage analytics and a pro admin dashboard (/admin) plus role-based access for consumer, musician, and venue, and now needs a nightlife-themed (Cyber‑Noir) UI/UX refresh starting with a redesigned dark-mode Landing Page hero section and supporting image assets.",
   "architectural_notes": [
-    "Implement in-app analytics without third-party services; track/store usage metrics in backend and expose them to a password-gated /admin dashboard."
+    "Implement in-app analytics without third-party services; track/store usage metrics in backend and expose them to a password-gated /admin dashboard.",
+    "Adopt a dark-mode-only 'Cyber‑Noir Luxury' design system (Deep Navy/Charcoal backgrounds, purple→pink gradient primary CTA, electric teal for money/success, glassmorphism + glow effects, Poppins headings + Inter/DM Sans body)."
   ],
   "known_issues": [
     "Automated build/implementation of the requested pro admin dashboard failed multiple times; may need simplification or re-scoping to succeed.",
     "App is very slow to load (performance issue reported by user); investigate initial load time and rendering/network bottlenecks."
   ],
-  "isFixRequest": true,
+  "isFixRequest": false,
+  "imageRequirements": "## Required Images\n- Neon gradient logo on dark background, stylized “E” or sound wave combined with a location pin (logo_full_dark_mode.png.dim_1024x1024.png)\n- Neon favicon mark matching the logo style, simplified for small sizes (favicon_neon.png.dim_256x256.png)\n- High-resolution dark-toned photo of a live jazz band performing, warm venue lighting, crowd energy (hero_jazz_band_bg.dim_2400x1350.jpg)\n- Dark sleek musician avatar silhouette with headphones or guitar (placeholder_musician_avatar.dim_512x512.png)\n- Generic venue cover image: clinking glasses or stage lights, dark nightlife feel (placeholder_venue_cover.dim_1600x900.jpg)\n- Wallet icon with neon/glow styling suitable for dark UI (icon_wallet_glow.dim_256x256.png)\n- Calendar icon with neon/glow styling suitable for dark UI (icon_calendar_glow.dim_256x256.png)",
   "existing_features": [
     {
       "id": "feature-add-frontend-tracking-that-automatically-records-usage-events-to-the-backend-record-a-session-start-when-an-authenticated-user-enters-the-app-and-record-page-view-or-equivalent-for-the-currently-rendered-screen-ensure-the-tracking-calls-do-not-block-ui-rendering-and-gracefully-no-op-when-the-actor-identity-is-unavailable",
@@ -56,6 +58,30 @@
       "title": "Update the Landing page call-to-action buttons to provide three distinct \"Continue as\" / \"Join as\" login options (Venue, Musician, Customer) while continuing to use Internet Identity for authentication.",
       "reqIds": [
         "REQ-9"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-redesign-the-landing-page-hero-section-to-a-dark-mode-cyber-noir-luxury-look-using-a-full-bleed-background-image-of-a-live-jazz-band-with-a-60-black-overlay-so-white-hero-text-remains-legible-and-include-a-primary-neon-purple-to-pink-gradient-cta-button-labeled-book-now",
+      "title": "Redesign the Landing Page hero section to a Dark Mode “Cyber‑Noir Luxury” look using a full-bleed background image of a live jazz band with a 60% black overlay so white hero text remains legible, and include a primary neon purple-to-pink gradient CTA button labeled “Book Now”.",
+      "reqIds": [
+        "REQ-13"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-required-nightlife-brand-image-assets-as-static-files-under-frontend-public-assets-generated-and-wire-them-into-the-ui-where-applicable-on-the-landing-page-header-branding-favicon-without-routing-images-through-the-backend",
+      "title": "Add required nightlife brand image assets as static files under frontend/public/assets/generated and wire them into the UI where applicable on the Landing Page (header branding + favicon) without routing images through the backend.",
+      "reqIds": [
+        "REQ-14"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-cyber-noir-ui-styling-tokens-on-the-landing-page-hero-deep-navy-charcoal-background-white-headings-slate-body-text-neon-purple-gradient-primary-action-subtle-glow-consistent-with-the-user-provided-design-system-without-switching-to-pure-black-000000",
+      "title": "Implement Cyber‑Noir UI styling tokens on the Landing Page hero (deep navy/charcoal background, white headings, slate body text, neon purple gradient primary action, subtle glow) consistent with the user-provided design system, without switching to pure black (#000000).",
+      "reqIds": [
+        "REQ-15"
       ],
       "version": 1
     }
@@ -131,6 +157,30 @@
       "reqIds": [
         "REQ-12"
       ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-11",
+      "summary": "Create/introduce new brand image assets (dark-mode neon logo + favicon, hero background, default musician avatar + venue cover placeholders, and glowing active-state icons) for a premium nightlife feel.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-12",
+      "summary": "Redesign the Landing Page to a Dark Mode 'Cyber‑Noir Luxury' style, starting with a new Hero section (headline + neon purple 'Book Now' button) using a live jazz band background image with dark overlay; add elements like 'Live Gigs Tonight' ticker and 'Trending Artists' carousel.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-13",
+      "summary": "Apply Cyber‑Noir UI/UX refresh to the /admin dashboard using glassmorphism cards and add new widgets ('Live Pulse' gigs counter, 'Escrow Vault' total funds display).",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-14",
+      "summary": "Redesign the Musician 'Gig Wallet' to emphasize trust with distinct locked vs available funds visual states (padlock/dimmed vs neon/available).",
+      "reqIds": [],
       "status": "pending"
     }
   ],

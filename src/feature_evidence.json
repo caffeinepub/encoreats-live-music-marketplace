@@ -1,4 +1,72 @@
 {
   "kind": "feature_evidence_report",
-  "features": []
+  "features": [
+    {
+      "featureId": "feature-redesign-the-landing-page-hero-section-to-a-dark-mode-cyber-noir-luxury-look-using-a-full-bleed-background-image-of-a-live-jazz-band-with-a-60-black-overlay-so-white-hero-text-remains-legible-and-include-a-primary-neon-purple-to-pink-gradient-cta-button-labeled-book-now",
+      "featureTitle": "Redesign the Landing Page hero section to a Dark Mode “Cyber‑Noir Luxury” look using a full-bleed background image of a live jazz band with a 60% black overlay so white hero text remains legible, and include a primary neon purple-to-pink gradient CTA button labeled “Book Now”.",
+      "files": [
+        "frontend/src/pages/LandingPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "qr-code@1.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "camera@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-13"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-required-nightlife-brand-image-assets-as-static-files-under-frontend-public-assets-generated-and-wire-them-into-the-ui-where-applicable-on-the-landing-page-header-branding-favicon-without-routing-images-through-the-backend",
+      "featureTitle": "Add required nightlife brand image assets as static files under frontend/public/assets/generated and wire them into the UI where applicable on the Landing Page (header branding + favicon) without routing images through the backend.",
+      "files": [
+        "frontend/index.html",
+        "frontend/src/pages/LandingPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "qr-code@1.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "camera@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-14"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-cyber-noir-ui-styling-tokens-on-the-landing-page-hero-deep-navy-charcoal-background-white-headings-slate-body-text-neon-purple-gradient-primary-action-subtle-glow-consistent-with-the-user-provided-design-system-without-switching-to-pure-black-000000",
+      "featureTitle": "Implement Cyber‑Noir UI styling tokens on the Landing Page hero (deep navy/charcoal background, white headings, slate body text, neon purple gradient primary action, subtle glow) consistent with the user-provided design system, without switching to pure black (#000000).",
+      "files": [
+        "frontend/src/pages/LandingPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "qr-code@1.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "camera@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-15"
+      ],
+      "confidence": "high"
+    }
+  ]
 }

@@ -1,7 +1,7 @@
 {
   "frontend/src/App.tsx": "Main application component with routing logic for authentication, profile setup, role-based dashboards, and admin dashboard with access control based on admin status.",
   "frontend/src/hooks/useQueries.ts": "Custom React Query hooks for all backend operations including profile management, gigs, slots, wallet state, and new admin analytics queries (summary, events, admin check) with usage tracking mutation.",
-  "frontend/src/pages/LandingPage.tsx": "Public landing page with three distinct role-specific login buttons (Venue, Musician, Customer) that store the selected role before initiating Internet Identity login, plus hero section, event search, and features showcase.",
+  "frontend/src/pages/LandingPage.tsx": "Landing page with full-bleed jazz band hero background, 60% black overlay, white headline text, slate-400 body text, neon purple-to-pink gradient \"Book Now\" CTA with glow effect, glassmorphism role selection cards, and updated branding with the new logo asset throughout header and footer.",
   "frontend/src/pages/VenueDashboard.tsx": "Venue dashboard with stats cards, musician search and booking interface, event management with QR scanner for attendance verification, using proper enum comparisons for gig status.",
   "frontend/src/pages/MusicianDashboard.tsx": "Musician dashboard with earnings stats, gig management, availability calendar, wallet view with payment states, and QR ticket generation using correct enum status values.",
   "frontend/src/pages/CustomerDashboard.tsx": "Customer dashboard for browsing and searching upcoming live music events with proper enum status display and filtering capabilities.",
@@ -13,8 +13,8 @@
   "frontend/src/components/AvailabilityCalendar.tsx": "Calendar interface for musicians to create and manage availability slots with toggle functionality for marking slots as available or unavailable.",
   "frontend/src/components/WalletView.tsx": "Wallet dashboard displaying musician earnings across three states (locked, available, paid) with explanatory information about the payment flow.",
   "frontend/src/components/QRTicketGenerator.tsx": "Component for musicians to generate and download QR code tickets using a canvas-based QR generator, displaying confirmed gigs with proper enum status handling.",
-  "frontend/src/index.css": "Global styles with dark theme OKLCH color system featuring purple/blue neon accents, glassmorphism effects, and Poppins/Inter typography.",
-  "frontend/tailwind.config.js": "Tailwind configuration with extended color palette for neon accents, custom shadows for glow effects, and animation utilities.",
+  "frontend/src/index.css": "Global styles with Cyber-Noir OKLCH color system featuring deep navy/charcoal backgrounds, neon purple/pink/teal accents, Poppins headings with tight tracking, and custom glow utility classes for the nightlife aesthetic.",
+  "frontend/tailwind.config.js": "Tailwind configuration extended with Poppins/Inter font families, custom glow box-shadow utilities (purple, pink, teal), and maintaining the OKLCH color token system for the Cyber-Noir design.",
   "frontend/src/hooks/useUsageTracking.ts": "React hook that automatically tracks user sessions and provides methods to track page views and actions, silently handling errors to prevent app disruption.",
   "frontend/src/components/AccessDeniedScreen.tsx": "Simple access denied screen component displayed to non-admin users attempting to access restricted admin areas.",
   "frontend/src/pages/AdminDashboard.tsx": "Admin dashboard page displaying KPI cards for user metrics, and a table of recent activity logs with proper loading, empty, and error states.",
@@ -30,5 +30,6 @@
   "tests/test-utils/mockQueries.ts": "Mock factories for backend-query hooks (useGetCallerUserProfile, useIsCallerAdmin, useFetchAllGigs, useRecordUsageEvent) to simulate backend data without network/canisters.",
   "tests/test-utils/mockUrlParams.ts": "Mock helpers for URL parameter utility functions (setSelectedRole, getSelectedRole, clearSelectedRole) to verify role selection behavior deterministically.",
   "tests/test-utils/mockUI.tsx": "Lightweight mocks for UI-only imports (ThemeProvider, Toaster, toast) that are irrelevant to logic assertions but can complicate tests.",
-  "tests/README.md": "Documentation for running the test suite, what is tested (LandingPage role login, App auth/routing gating, usage tracking), what is mocked (Internet Identity, backend queries, URL params), and coverage areas."
+  "tests/README.md": "Documentation for running the test suite, what is tested (LandingPage role login, App auth/routing gating, usage tracking), what is mocked (Internet Identity, backend queries, URL params), and coverage areas.",
+  "frontend/index.html": "HTML entry point with updated favicon reference to the new neon favicon asset."
 }

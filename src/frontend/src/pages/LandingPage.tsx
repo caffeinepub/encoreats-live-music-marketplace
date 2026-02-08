@@ -41,88 +41,168 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="sticky top-0 z-50 border-b border-border/40 bg-background/80 backdrop-blur-xl">
+      <header className="sticky top-0 z-50 border-b border-white/10 bg-background/80 backdrop-blur-xl">
         <div className="container mx-auto flex h-16 items-center justify-between px-4">
-          <div className="flex items-center gap-2">
-            <Music className="h-8 w-8 text-chart-1" />
-            <span className="text-2xl font-bold bg-gradient-to-r from-chart-1 to-chart-4 bg-clip-text text-transparent">
+          <div className="flex items-center gap-3">
+            <img 
+              src="/assets/generated/logo_full_dark_mode.png.dim_1024x1024.png" 
+              alt="Encoreats Logo" 
+              className="h-10 w-10"
+            />
+            <span className="text-2xl font-bold font-heading bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
               Encoreats
             </span>
           </div>
-          <Button onClick={() => handleRoleLogin('venue')} disabled={isLoggingIn} size="lg" className="bg-chart-1 hover:bg-chart-1/90">
+          <Button 
+            onClick={() => handleRoleLogin('venue')} 
+            disabled={isLoggingIn} 
+            size="lg" 
+            className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-glow transition-all duration-300"
+          >
             {isLoggingIn ? 'Connecting...' : 'Get Started'}
           </Button>
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section className="relative overflow-hidden py-20 md:py-32">
-        <div className="absolute inset-0 bg-gradient-to-br from-chart-1/20 via-background to-chart-4/20"></div>
-        <div className="container relative mx-auto px-4">
+      {/* Hero Section - Cyber-Noir with Jazz Band Background */}
+      <section className="relative overflow-hidden min-h-[600px] md:min-h-[700px] flex items-center">
+        {/* Background Image with Overlay */}
+        <div className="absolute inset-0">
+          <img 
+            src="/assets/generated/hero_jazz_band_bg.dim_2400x1350.jpg" 
+            alt="Live Jazz Band Performance" 
+            className="w-full h-full object-cover"
+          />
+          {/* 60% Black Overlay */}
+          <div className="absolute inset-0 bg-black/60"></div>
+        </div>
+
+        {/* Content */}
+        <div className="container relative mx-auto px-4 py-20 md:py-32">
           <div className="mx-auto max-w-4xl text-center">
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-chart-1/30 bg-chart-1/10 px-4 py-2 backdrop-blur-sm">
-              <Sparkles className="h-4 w-4 text-chart-1" />
-              <span className="text-sm font-medium text-chart-1">Live Music Marketplace</span>
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-purple-500/30 bg-purple-500/10 px-4 py-2 backdrop-blur-sm">
+              <Sparkles className="h-4 w-4 text-purple-400" />
+              <span className="text-sm font-medium text-purple-300">Live Music Marketplace</span>
             </div>
-            <h1 className="mb-6 text-5xl font-bold leading-tight tracking-tight md:text-7xl">
+            
+            {/* Hero Headline - White Text */}
+            <h1 className="mb-6 text-5xl font-bold font-heading leading-tight tracking-tight text-white md:text-7xl">
               Where Live Music
               <br />
-              <span className="bg-gradient-to-r from-chart-1 via-chart-4 to-chart-2 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-purple-500 bg-clip-text text-transparent">
                 Finds a Home
               </span>
             </h1>
-            <p className="mb-8 text-xl text-muted-foreground md:text-2xl">
+            
+            {/* Body Text - Slate-400 */}
+            <p className="mb-10 text-xl text-slate-400 md:text-2xl">
               Connect venues, musicians, and music lovers in one seamless platform.
               <br />
               Book gigs, manage events, and experience live music like never before.
             </p>
-            <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
+            
+            {/* CTA Button - Neon Purple Gradient with Glow */}
+            <div className="flex justify-center">
               <Button 
                 onClick={() => handleRoleLogin('venue')} 
                 disabled={isLoggingIn} 
                 size="lg" 
-                className="bg-chart-1 hover:bg-chart-1/90 text-lg h-14 px-8 gap-2"
+                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white text-lg h-16 px-10 gap-2 shadow-glow-lg transition-all duration-300 hover:shadow-glow-lg hover:scale-105"
               >
-                <Building2 className="h-5 w-5" />
-                {isLoggingIn ? 'Connecting...' : 'Join as Venue'}
-              </Button>
-              <Button 
-                onClick={() => handleRoleLogin('musician')} 
-                disabled={isLoggingIn} 
-                size="lg" 
-                variant="outline" 
-                className="border-chart-4 text-chart-4 hover:bg-chart-4/10 text-lg h-14 px-8 gap-2"
-              >
-                <Music className="h-5 w-5" />
-                {isLoggingIn ? 'Connecting...' : 'Join as Musician'}
-              </Button>
-              <Button 
-                onClick={() => handleRoleLogin('customer')} 
-                disabled={isLoggingIn} 
-                size="lg" 
-                variant="outline" 
-                className="border-chart-2 text-chart-2 hover:bg-chart-2/10 text-lg h-14 px-8 gap-2"
-              >
-                <Users className="h-5 w-5" />
-                {isLoggingIn ? 'Connecting...' : 'Join as Customer'}
+                {isLoggingIn ? 'Connecting...' : 'Book Now'}
               </Button>
             </div>
           </div>
         </div>
       </section>
 
+      {/* Role Selection Section - Glassmorphism Cards */}
+      <section className="py-16 bg-background/50">
+        <div className="container mx-auto px-4">
+          <div className="mb-12 text-center">
+            <h2 className="mb-4 text-4xl font-bold font-heading text-white">Join the Movement</h2>
+            <p className="text-xl text-slate-400">Choose your role and start your journey</p>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-3 max-w-5xl mx-auto">
+            <Card className="backdrop-blur-xl bg-white/5 border-white/10 hover:border-purple-500/50 transition-all duration-300 group cursor-pointer" onClick={() => !isLoggingIn && handleRoleLogin('venue')}>
+              <CardHeader className="text-center">
+                <div className="mb-4 mx-auto inline-flex h-16 w-16 items-center justify-center rounded-full bg-purple-500/20 group-hover:bg-purple-500/30 transition-colors">
+                  <Building2 className="h-8 w-8 text-purple-400" />
+                </div>
+                <CardTitle className="text-white text-2xl">For Venues</CardTitle>
+                <CardDescription className="text-slate-400 text-base">
+                  Book talented musicians, generate marketing assets, track ROI, and manage events seamlessly.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button 
+                  onClick={(e) => { e.stopPropagation(); handleRoleLogin('venue'); }} 
+                  disabled={isLoggingIn} 
+                  className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
+                >
+                  {isLoggingIn ? 'Connecting...' : 'Join as Venue'}
+                </Button>
+              </CardContent>
+            </Card>
+
+            <Card className="backdrop-blur-xl bg-white/5 border-white/10 hover:border-pink-500/50 transition-all duration-300 group cursor-pointer" onClick={() => !isLoggingIn && handleRoleLogin('musician')}>
+              <CardHeader className="text-center">
+                <div className="mb-4 mx-auto inline-flex h-16 w-16 items-center justify-center rounded-full bg-pink-500/20 group-hover:bg-pink-500/30 transition-colors">
+                  <Music className="h-8 w-8 text-pink-400" />
+                </div>
+                <CardTitle className="text-white text-2xl">For Musicians</CardTitle>
+                <CardDescription className="text-slate-400 text-base">
+                  Manage your calendar, track payments with our wallet system, and get booked for more gigs.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button 
+                  onClick={(e) => { e.stopPropagation(); handleRoleLogin('musician'); }} 
+                  disabled={isLoggingIn} 
+                  className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
+                >
+                  {isLoggingIn ? 'Connecting...' : 'Join as Musician'}
+                </Button>
+              </CardContent>
+            </Card>
+
+            <Card className="backdrop-blur-xl bg-white/5 border-white/10 hover:border-teal-500/50 transition-all duration-300 group cursor-pointer" onClick={() => !isLoggingIn && handleRoleLogin('customer')}>
+              <CardHeader className="text-center">
+                <div className="mb-4 mx-auto inline-flex h-16 w-16 items-center justify-center rounded-full bg-teal-500/20 group-hover:bg-teal-500/30 transition-colors">
+                  <Users className="h-8 w-8 text-teal-400" />
+                </div>
+                <CardTitle className="text-white text-2xl">For Music Lovers</CardTitle>
+                <CardDescription className="text-slate-400 text-base">
+                  Discover live music events, reserve tables, and experience unforgettable performances.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button 
+                  onClick={(e) => { e.stopPropagation(); handleRoleLogin('customer'); }} 
+                  disabled={isLoggingIn} 
+                  className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
+                >
+                  {isLoggingIn ? 'Connecting...' : 'Join as Customer'}
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
       {/* Search Section */}
-      <section className="py-12 bg-card/50 backdrop-blur-sm">
+      <section className="py-12 backdrop-blur-xl bg-white/5">
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-2xl">
             <div className="relative">
-              <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
+              <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
               <Input
                 type="text"
                 placeholder="Search events by name, city, or genre..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="h-14 pl-12 text-lg bg-background/50 backdrop-blur-sm border-border/50"
+                className="h-14 pl-12 text-lg bg-white/5 backdrop-blur-sm border-white/10 text-white placeholder:text-slate-500 focus:border-purple-500/50"
               />
             </div>
           </div>
@@ -133,35 +213,35 @@ export default function LandingPage() {
       <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="mb-12 text-center">
-            <h2 className="mb-4 text-4xl font-bold">Upcoming Events</h2>
-            <p className="text-xl text-muted-foreground">Discover amazing live music experiences near you</p>
+            <h2 className="mb-4 text-4xl font-bold font-heading text-white">Upcoming Events</h2>
+            <p className="text-xl text-slate-400">Discover amazing live music experiences near you</p>
           </div>
 
           {upcomingGigs.length === 0 ? (
             <div className="text-center py-12">
-              <Music className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
-              <p className="text-xl text-muted-foreground">No upcoming events yet. Check back soon!</p>
+              <Music className="h-16 w-16 mx-auto mb-4 text-slate-600" />
+              <p className="text-xl text-slate-400">No upcoming events yet. Check back soon!</p>
             </div>
           ) : (
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {upcomingGigs.map((gig) => (
-                <Card key={Number(gig.id)} className="group overflow-hidden border-border/50 bg-card/50 backdrop-blur-sm hover:border-chart-1/50 transition-all duration-300">
-                  <div className="aspect-video w-full overflow-hidden bg-gradient-to-br from-chart-1/20 to-chart-4/20">
+                <Card key={Number(gig.id)} className="group overflow-hidden backdrop-blur-xl bg-white/5 border-white/10 hover:border-purple-500/50 transition-all duration-300">
+                  <div className="aspect-video w-full overflow-hidden bg-gradient-to-br from-purple-500/20 to-pink-500/20">
                     <img
-                      src="/assets/generated/venue-hero.dim_1200x800.jpg"
+                      src="/assets/generated/placeholder_venue_cover.dim_1600x900.jpg"
                       alt={gig.name}
                       className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
                     />
                   </div>
                   <CardHeader>
                     <div className="mb-2 flex items-center justify-between">
-                      <Badge variant="outline" className="border-chart-1 text-chart-1">
+                      <Badge variant="outline" className="border-purple-500 text-purple-400 bg-purple-500/10">
                         Live Music
                       </Badge>
-                      <span className="text-sm font-semibold text-chart-2">₹{Number(gig.price)}</span>
+                      <span className="text-sm font-semibold text-teal-400">₹{Number(gig.price)}</span>
                     </div>
-                    <CardTitle className="text-xl">{gig.name}</CardTitle>
-                    <CardDescription className="flex flex-col gap-2 text-base">
+                    <CardTitle className="text-xl text-white">{gig.name}</CardTitle>
+                    <CardDescription className="flex flex-col gap-2 text-base text-slate-400">
                       <span className="flex items-center gap-2">
                         <Calendar className="h-4 w-4" />
                         {new Date(Number(gig.date) / 1000000).toLocaleDateString('en-US', {
@@ -178,7 +258,11 @@ export default function LandingPage() {
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <Button onClick={() => handleRoleLogin('customer')} className="w-full bg-chart-1 hover:bg-chart-1/90" disabled={isLoggingIn}>
+                    <Button 
+                      onClick={() => handleRoleLogin('customer')} 
+                      className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-glow transition-all duration-300" 
+                      disabled={isLoggingIn}
+                    >
                       {isLoggingIn ? 'Connecting...' : 'Reserve Table'}
                     </Button>
                   </CardContent>
@@ -189,76 +273,32 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-16 bg-card/30 backdrop-blur-sm">
-        <div className="container mx-auto px-4">
-          <div className="mb-12 text-center">
-            <h2 className="mb-4 text-4xl font-bold">Why Choose Encoreats?</h2>
-            <p className="text-xl text-muted-foreground">Everything you need for live music success</p>
-          </div>
-
-          <div className="grid gap-8 md:grid-cols-3">
-            <Card className="border-border/50 bg-background/50 backdrop-blur-sm">
-              <CardHeader>
-                <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-chart-1/20">
-                  <Building2 className="h-6 w-6 text-chart-1" />
-                </div>
-                <CardTitle>For Venues</CardTitle>
-                <CardDescription className="text-base">
-                  Book talented musicians, generate marketing assets, track ROI, and manage events seamlessly.
-                </CardDescription>
-              </CardHeader>
-            </Card>
-
-            <Card className="border-border/50 bg-background/50 backdrop-blur-sm">
-              <CardHeader>
-                <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-chart-4/20">
-                  <Music className="h-6 w-6 text-chart-4" />
-                </div>
-                <CardTitle>For Musicians</CardTitle>
-                <CardDescription className="text-base">
-                  Manage your calendar, track payments with our wallet system, and get booked for more gigs.
-                </CardDescription>
-              </CardHeader>
-            </Card>
-
-            <Card className="border-border/50 bg-background/50 backdrop-blur-sm">
-              <CardHeader>
-                <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-chart-2/20">
-                  <Users className="h-6 w-6 text-chart-2" />
-                </div>
-                <CardTitle>For Music Lovers</CardTitle>
-                <CardDescription className="text-base">
-                  Discover live music events, reserve tables, and experience unforgettable performances.
-                </CardDescription>
-              </CardHeader>
-            </Card>
-          </div>
-        </div>
-      </section>
-
       {/* Footer */}
-      <footer className="border-t border-border/40 bg-card/30 backdrop-blur-sm py-12">
+      <footer className="border-t border-white/10 backdrop-blur-xl bg-white/5 py-12">
         <div className="container mx-auto px-4">
           <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
-            <div className="flex items-center gap-2">
-              <Music className="h-6 w-6 text-chart-1" />
-              <span className="text-xl font-bold">Encoreats</span>
+            <div className="flex items-center gap-3">
+              <img 
+                src="/assets/generated/logo_full_dark_mode.png.dim_1024x1024.png" 
+                alt="Encoreats Logo" 
+                className="h-8 w-8"
+              />
+              <span className="text-xl font-bold font-heading text-white">Encoreats</span>
             </div>
             <div className="flex items-center gap-6">
-              <a href="#" className="text-muted-foreground hover:text-chart-1 transition-colors">
+              <a href="#" className="text-slate-400 hover:text-purple-400 transition-colors">
                 <SiFacebook className="h-5 w-5" />
               </a>
-              <a href="#" className="text-muted-foreground hover:text-chart-1 transition-colors">
+              <a href="#" className="text-slate-400 hover:text-purple-400 transition-colors">
                 <SiX className="h-5 w-5" />
               </a>
-              <a href="#" className="text-muted-foreground hover:text-chart-1 transition-colors">
+              <a href="#" className="text-slate-400 hover:text-purple-400 transition-colors">
                 <SiInstagram className="h-5 w-5" />
               </a>
             </div>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-slate-400">
               © 2026. Built with ❤️ using{' '}
-              <a href="https://caffeine.ai" target="_blank" rel="noopener noreferrer" className="text-chart-1 hover:underline">
+              <a href="https://caffeine.ai" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300 transition-colors hover:underline">
                 caffeine.ai
               </a>
             </p>

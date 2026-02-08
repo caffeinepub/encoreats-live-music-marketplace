@@ -1,13 +1,11 @@
 # Specification
 
 ## Summary
-**Goal:** Add a complete repository-root `/tests` folder containing a working Jest + React Testing Library frontend test suite for the existing React app.
+**Goal:** Refresh the Landing Page hero into a Dark Mode “Cyber‑Noir Luxury” aesthetic with a jazz-band hero background, legible white text, and a neon gradient “Book Now” CTA, plus add required nightlife branding assets (logo + favicon) as static frontend files.
 
 **Planned changes:**
-- Create a root-level `/tests` directory containing all test files plus shared test utilities/mocks.
-- Add deterministic test harness utilities (e.g., `renderWithProviders`) to wrap components with required providers and avoid runtime errors in tests.
-- Mock authentication/admin/data hooks and usage tracking modules so tests can simulate states without network/canister dependencies and without editing immutable frontend hook/UI files.
-- Implement tests covering: LandingPage role-based login buttons; App unauthenticated gating to LandingPage; ProfileSetup rendering when authenticated but `userProfile` is null; `/admin` route gating (AdminDashboard vs AccessDeniedScreen); role-based dashboard rendering (venue/musician/customer); usage tracking behavior (`page_view` on mount when authenticated; `session_start` once per session).
-- Add `/tests/README.md` describing how to run tests locally, what is mocked, and which modules/behaviors are covered.
+- Redesign the Landing Page hero to use a full-bleed live jazz band background image with an approximately 60% black overlay to maintain readability of English hero text.
+- Apply Cyber‑Noir styling tokens in the hero (deep navy/charcoal feel, white headings, slate-muted body text, neon purple→pink gradient primary action with subtle glow), avoiding pure black (#000000).
+- Add new static brand assets under `frontend/public/assets/generated/` (logo + favicon and placeholders/icons as provided) and wire the logo into the Landing Page header branding and the favicon into the HTML entry point.
 
-**User-visible outcome:** Developers can run a local, offline frontend test suite that validates authentication gating, routing/admin access, role-based dashboards, and usage tracking behavior.
+**User-visible outcome:** The Landing Page opens with a dark, cyber‑noir hero featuring a readable English headline over a jazz-band image and a glowing neon gradient “Book Now” button, and the site shows the new “The Beacon” logo in the header and a neon favicon in the browser tab.
